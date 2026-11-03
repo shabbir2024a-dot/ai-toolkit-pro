@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense Account Verification & Auto Ads -->
+  <meta name="google-adsense-account" content="ca-pub-4611140073860733">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4611140073860733" crossorigin="anonymous"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Studio Setup Walkthrough & Product Flow Tour | AI Toolkit Pro</title>
+  <meta name="description" content="Watch the full product flow walkthrough of AI Toolkit Pro Creator Store: compare 70+ verified studio rigs, microphones, 4K cameras, RTX rendering workstations, and standing desks.">
+  <link rel="canonical" href="https://ai-toolkit-pro-eta.vercel.app/creator-video">
+  
+  <!-- OpenGraph -->
+  <meta property="og:type" content="video.other">
+  <meta property="og:title" content="Creator Studio Setup Walkthrough & Product Flow Tour | AI Toolkit Pro">
+  <meta property="og:description" content="Explore 70+ battle-tested studio rigs, microphones, cameras, GPUs, and ergonomic standing desks for creators and 3D animators.">
+  <meta property="og:url" content="https://ai-toolkit-pro-eta.vercel.app/creator-video">
+  <meta property="og:video" content="https://ai-toolkit-pro-eta.vercel.app/creator_store_flow_tour.mp4">
+  <meta property="og:video:type" content="video/mp4">
+  <meta property="og:video:width" content="1080">
+  <meta property="og:video:height" content="1920">
+
+  <!-- Schema.org VideoObject -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "AI Toolkit Pro Creator Studio Setup & Hardware Flow Tour",
+    "description": "Comprehensive walkthrough of verified studio tech, 4K cameras, cardioid dynamic microphones, RTX workstations, and ergonomic sit-stand workstations for creators.",
+    "thumbnailUrl": [
+      "https://ai-toolkit-pro-eta.vercel.app/assets/products/shure-sm7b-dynamic-vocal-mic.jpg"
+    ],
+    "uploadDate": "2026-11-01T00:30:00+05:30",
+    "duration": "PT58S",
+    "contentUrl": "https://ai-toolkit-pro-eta.vercel.app/creator_store_flow_tour.mp4",
+    "embedUrl": "https://ai-toolkit-pro-eta.vercel.app/creator-video"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .video-hero-section {
+      padding: 120px 24px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .video-grid-layout {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .video-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .player-card {
+      background: #042426;
+      border: 1px solid rgba(12, 150, 156, 0.4);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(12, 150, 156, 0.15);
+      position: sticky;
+      top: 100px;
+    }
+    .video-container {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 9/16;
+      max-height: 720px;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .video-action-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-act {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-act-amazon {
+      background: #FFD814;
+      color: #0F1111;
+      border: 1px solid #FCD200;
+    }
+    .btn-act-amazon:hover {
+      background: #F7CA00;
+      transform: translateY(-2px);
+    }
+    .btn-act-download {
+      background: rgba(12, 150, 156, 0.2);
+      color: #0C969C;
+      border: 1px solid rgba(12, 150, 156, 0.4);
+    }
+    .btn-act-download:hover {
+      background: rgba(12, 150, 156, 0.35);
+      color: #fff;
+    }
+    .info-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(12, 150, 156, 0.15);
+      border: 1px solid rgba(12, 150, 156, 0.4);
+      color: #0C969C;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      width: fit-content;
+    }
+    .chapters-list {
+      background: rgba(4, 36, 38, 0.6);
+      border: 1px solid rgba(12, 150, 156, 0.25);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .chapter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 10px;
+      transition: background 0.2s;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .chapter-item:last-child {
+      border-bottom: none;
+    }
+    .chapter-item:hover {
+      background: rgba(12, 150, 156, 0.2);
+    }
+    .ch-time {
+      font-family: 'JetBrains Mono', monospace;
+      color: #FF9900;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255, 153, 0, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .ch-title {
+      font-size: 14px;
+      color: #f1f5f9;
+      font-weight: 600;
+      flex: 1;
+      margin-left: 14px;
+    }
+    .gear-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .gear-mini-card {
+      background: #042426;
+      border: 1px solid rgba(12, 150, 156, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .gear-mini-card:hover {
+      transform: translateY(-3px);
+      border-color: #0C969C;
+    }
+    .mini-img-wrap {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mini-img-wrap img {
+      max-height: 120px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .mini-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+    .mini-btn {
+      margin-top: auto;
+      padding: 8px 12px;
+      background: #FFD814;
+      color: #0F1111;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+    }
+    .mini-btn:hover {
+      background: #F7CA00;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="navbar" style="position: fixed; top: 0; width: 100%; z-index: 100; backdrop-filter: blur(12px); background: rgba(3, 23, 22, 0.85); border-bottom: 1px solid rgba(12, 150, 156, 0.2);">
+    <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px;">
+      <a href="index.html" class="brand-logo" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <span style="background: linear-gradient(135deg, #0C969C, #27496D); color: #fff; width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px;">AI</span>
+        <span style="font-weight: 800; font-size: 18px; color: #fff; letter-spacing: -0.02em;">AI TOOLKIT <span style="color: #0C969C;">PRO</span></span>
+      </a>
+      <nav class="nav-links" style="display: flex; gap: 20px; align-items: center;">
+        <a href="creator-gear.html" style="color: #FF9900; font-weight: 700; font-size: 14px; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+          <span>⚡ 70+ Creator Store</span>
+        </a>
+        <a href="free-claude-opus-5.html" style="color: #6BA3BE; font-weight: 600; font-size: 14px; text-decoration: none;">Claude Opus 5</a>
+        <a href="source-codes.html" style="color: #6BA3BE; font-weight: 600; font-size: 14px; text-decoration: none;">Micro-SaaS Vault</a>
+        <a href="creator-gear.html" class="nav-cta" style="background: linear-gradient(135deg, #0C969C, #27496D); color: #fff; padding: 8px 18px; border-radius: 10px; font-weight: 700; font-size: 13px; text-decoration: none;">Explore Gear ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="video-hero-section">
+    <div class="video-grid-layout">
+      <!-- Left Column: Video Player Card -->
+      <div class="player-card">
+        <div class="video-container">
+          <video id="creatorVideo" controls autoplay muted playsinline poster="assets/products/shure-sm7b-dynamic-vocal-mic.jpg">
+            <source src="creator_store_flow_tour.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div class="video-action-bar">
+          <a href="creator_store_flow_tour.mp4" download="AI_Toolkit_Pro_Creator_Store_Tour.mp4" class="btn-act btn-act-download">
+            <span>⬇ Download MP4</span>
+          </a>
+          <a href="creator-gear.html?tag=aitoolkitpro-21" class="btn-act btn-act-amazon">
+            <span>⚡ Open 70+ Store ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Flow Overview & Chapters -->
+      <div class="info-content">
+        <div>
+          <span class="badge-pill">🎬 58-Second Official Product Tour</span>
+          <h1 style="font-size: 32px; font-weight: 800; color: #fff; margin: 12px 0 8px; line-height: 1.25;">
+            Building Your World-Class Creator Studio Without Guesswork
+          </h1>
+          <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">
+            A complete walkthrough of the AI Toolkit Pro Creator Gear storefront. Learn how we curate and test 70+ studio microphones, 4K vlog cameras, RTX rendering workstations, and ergonomic sit-stand furniture with direct 1-day Amazon Prime delivery across India.
+          </p>
+        </div>
+
+        <!-- Video Chapters -->
+        <div class="chapters-list">
+          <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>⏱ Key Flow Chapters</span>
+            <span style="font-size: 12px; color: #64748b; font-weight: 500;">(Click to jump)</span>
+          </h3>
+
+          <div class="chapter-item" onclick="seekVideo(0)">
+            <span class="ch-time">00:00</span>
+            <span class="ch-title">The Creator Struggle: Misleading specs & setup traps</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+          <div class="chapter-item" onclick="seekVideo(7.5)">
+            <span class="ch-time">00:08</span>
+            <span class="ch-title">The Solution: AI Toolkit Pro Curated Store</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+          <div class="chapter-item" onclick="seekVideo(17)">
+            <span class="ch-time">00:17</span>
+            <span class="ch-title">Flagship Audio & 4K Video: Shure SM7B & Sony ZV-E10</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+          <div class="chapter-item" onclick="seekVideo(27)">
+            <span class="ch-time">00:27</span>
+            <span class="ch-title">Workstations & Ergonomics: RTX 4070 & Dual-Motor Desks</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+          <div class="chapter-item" onclick="seekVideo(37)">
+            <span class="ch-time">00:37</span>
+            <span class="ch-title">Code Vault & AI Studio: 33+ Apps + Claude Opus 5</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+          <div class="chapter-item" onclick="seekVideo(45)">
+            <span class="ch-time">00:45</span>
+            <span class="ch-title">Final Call to Action: Fast Prime Delivery</span>
+            <span style="color: #0C969C; font-size: 12px;">Jump ➔</span>
+          </div>
+        </div>
+
+        <!-- Featured Products Quick Buy -->
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 18px; font-weight: 700;">Featured Rigs in This Video</h3>
+            <a href="creator-gear.html?tag=aitoolkitpro-21" style="color: #0C969C; font-size: 13px; font-weight: 700; text-decoration: none;">View all 54 rigs ➔</a>
+          </div>
+
+          <div class="gear-mini-grid">
+            <!-- Shure SM7B -->
+            <div class="gear-mini-card">
+              <div class="mini-img-wrap">
+                <img src="assets/products/shure-sm7b-dynamic-vocal-mic.jpg" alt="Shure SM7B Mic" loading="lazy">
+              </div>
+              <div class="mini-name">Shure SM7B Dynamic Vocal Microphone</div>
+              <a href="https://www.amazon.in/dp/B0002E4Z8M?tag=aitoolkitpro-21" target="_blank" rel="noopener sponsored" class="mini-btn">Buy on Amazon ↗</a>
+            </div>
+
+            <!-- Sony ZV-E10 -->
+            <div class="gear-mini-card">
+              <div class="mini-img-wrap">
+                <img src="assets/products/sony-alpha-zve10-with-zoom-lens.jpg" alt="Sony Alpha ZV-E10" loading="lazy">
+              </div>
+              <div class="mini-name">Sony Alpha ZV-E10 4K Mirrorless Camera</div>
+              <a href="https://www.amazon.in/dp/B0DJSLJYCF?tag=aitoolkitpro-21" target="_blank" rel="noopener sponsored" class="mini-btn">Buy on Amazon ↗</a>
+            </div>
+
+            <!-- DJI Osmo Pocket 3 -->
+            <div class="gear-mini-card">
+              <div class="mini-img-wrap">
+                <img src="assets/products/dji-osmo-pocket-3-creator-combo.jpg" alt="DJI Osmo Pocket 3" loading="lazy">
+              </div>
+              <div class="mini-name">DJI Osmo Pocket 3 Creator Combo</div>
+              <a href="https://www.amazon.in/dp/B0FKT9K6CB?tag=aitoolkitpro-21" target="_blank" rel="noopener sponsored" class="mini-btn">Buy on Amazon ↗</a>
+            </div>
+
+            <!-- Zotac RTX 4070 -->
+            <div class="gear-mini-card">
+              <div class="mini-img-wrap">
+                <img src="assets/products/zotac-rtx-5060-4070-graphics-card.jpg" alt="Zotac RTX 4070" loading="lazy">
+              </div>
+              <div class="mini-name">Zotac Gaming RTX 4070 Twin Edge 12GB</div>
+              <a href="https://www.amazon.in/dp/B0C39R8P52?tag=aitoolkitpro-21" target="_blank" rel="noopener sponsored" class="mini-btn">Buy on Amazon ↗</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer style="margin-top: 80px; padding: 40px 24px; border-top: 1px solid rgba(12, 150, 156, 0.2); text-align: center; color: #64748b; font-size: 13px;">
+    <p>© 2026 AI Toolkit Pro. All product names, logos, and brands are property of their respective owners.</p>
+    <p style="margin-top: 8px;">Affiliate Disclosure: As an Amazon Associate, AI Toolkit Pro earns from qualifying purchases at no extra cost to you.</p>
+  </footer>
+
+  <script>
+    function seekVideo(seconds) {
+      const vid = document.getElementById('creatorVideo');
+      if (vid) {
+        vid.currentTime = seconds;
+        vid.play().catch(() => {});
+      }
+    }
+  </script>
+</body>
+</html>

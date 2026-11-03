@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI TOOLKIT PRO — The Sovereign Creator & AI Hardware Operating System</title>
+<meta name="description" content="AI TOOLKIT PRO: 70+ creator rigs, free AI Studio playground, Micro-SaaS Vault, and 0% platform fees.">
+
+<!-- ===== FONTS ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   DESIGN TOKENS — Luxury Dark Teal & Cyber Emerald, Neon Lime accents
+   ========================================================================== */
+:root{
+  --bg-0:#021211;            /* deepest obsidian teal */
+  --bg-1:#031716;            /* base */
+  --bg-2:#052423;            /* elevated panel */
+  --cyan:#0C969C;
+  --emerald:#0A7075;
+  --lime:#d1fe17;
+  --amber:#FF9900;
+  --ink:#eaf7f5;
+  --muted:#8fb6b2;
+  --glass:rgba(5,36,35,.52);
+  --glass-strong:rgba(5,36,35,.72);
+  --stroke:rgba(101,224,218,.14);
+  --stroke-lime:rgba(209,254,23,.35);
+  --lime-soft:rgba(209,254,23,.12);
+  --cyan-soft:rgba(12,150,156,.16);
+  --shadow:0 24px 60px -20px rgba(0,0,0,.65);
+  --r-lg:24px;
+  --r-md:16px;
+  --r-sm:10px;
+  --font-display:"Bricolage Grotesque",sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ===== RESET / BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-0);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--lime);color:#031716}
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.08;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg-1)}
+::-webkit-scrollbar-thumb{background:#0e4b4d;border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:var(--emerald)}
+
+/* ===== BACKGROUND LAYERS (mesh glow + grid + noise) ===== */
+.scene{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(900px 620px at 12% -5%, rgba(12,150,156,.22), transparent 60%),
+    radial-gradient(800px 600px at 92% 8%, rgba(209,254,23,.10), transparent 55%),
+    radial-gradient(1000px 800px at 50% 115%, rgba(10,112,117,.28), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+}
+.scene::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(101,224,218,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(101,224,218,.035) 1px, transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 75% 60% at 50% 20%, #000 20%, transparent 80%);
+          mask-image:radial-gradient(ellipse 75% 60% at 50% 20%, #000 20%, transparent 80%);
+}
+.scene::after{
+  content:"";position:absolute;inset:0;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+}
+.glow-orb{position:fixed;border-radius:50%;filter:blur(90px);z-index:-1;pointer-events:none;opacity:.55}
+.glow-orb.g1{width:420px;height:420px;top:-140px;right:-80px;background:radial-gradient(circle,rgba(12,150,156,.5),transparent 70%)}
+.glow-orb.g2{width:360px;height:360px;bottom:-120px;left:-100px;background:radial-gradient(circle,rgba(209,254,23,.18),transparent 70%)}
+
+/* ===== UTILITIES ===== */
+.container{width:min(1200px,92%);margin-inline:auto}
+.section{padding:110px 0;position:relative}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--lime);border:1px solid var(--stroke-lime);background:var(--lime-soft);
+  padding:8px 16px;border-radius:999px;
+}
+.kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);animation:pulse 2s infinite}
+.section-title{font-size:clamp(30px,4.6vw,52px);font-weight:700;margin:20px 0 14px}
+.section-sub{color:var(--muted);max-width:640px;font-size:17px}
+.glass{
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:var(--r-lg);
+}
+.mono{font-family:var(--font-mono)}
+.lime{color:var(--lime)}
+.cyan{color:var(--cyan)}
+.amber{color:var(--amber)}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;justify-content:center;
+  font-weight:600;font-size:15px;border-radius:14px;padding:14px 26px;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s, border-color .25s;
+  will-change:transform;position:relative;overflow:hidden;
+}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--lime);color:#081010;box-shadow:0 10px 34px -8px rgba(209,254,23,.5)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 44px -8px rgba(209,254,23,.65)}
+.btn-ghost{border:1px solid var(--stroke);color:var(--ink);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--cyan);background:var(--cyan-soft);transform:translateY(-3px)}
+.btn-cyan{background:linear-gradient(135deg,var(--cyan),var(--emerald));color:#fff;box-shadow:0 10px 30px -8px rgba(12,150,156,.5)}
+.btn-cyan:hover{transform:translateY(-3px);box-shadow:0 16px 40px -8px rgba(12,150,156,.7)}
+.btn .icon{width:18px;height:18px}
+
+/* chip */
+.chip{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11.5px;
+  letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--muted);
+  transition:.25s;
+}
+.chip:hover{border-color:var(--cyan);color:var(--ink)}
+
+/* ===== NAVBAR ===== */
+.nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  width:min(1240px,94%);z-index:100;
+  display:flex;align-items:center;gap:14px;
+  background:var(--glass-strong);border:1px solid var(--stroke);
+  border-radius:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:12px 18px;box-shadow:var(--shadow);
+  transition:top .3s var(--ease), background .3s;
+}
+.nav.scrolled{top:10px;background:rgba(2,18,17,.85)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:17px;letter-spacing:-.02em;white-space:nowrap}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:conic-gradient(from 210deg, var(--lime), var(--cyan), var(--emerald), var(--lime));display:grid;place-items:center;box-shadow:0 0 24px rgba(12,150,156,.5);position:relative}
+.brand .mark svg{width:18px;height:18px;color:#031716}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:8px;flex:1}
+.nav-link{
+  font-size:13.5px;font-weight:500;color:var(--muted);padding:9px 14px;border-radius:10px;
+  transition:color .2s, background .2s;white-space:nowrap;position:relative;
+}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+.nav-link.active{color:var(--lime);background:var(--lime-soft)}
+.nav-meta{display:flex;align-items:center;gap:12px;margin-left:auto}
+.status-pill{
+  display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;
+  letter-spacing:.14em;color:#9ff0c9;background:rgba(40,200,120,.08);
+  border:1px solid rgba(64,224,150,.25);padding:8px 13px;border-radius:999px;white-space:nowrap;
+}
+.status-pill .pulse{width:7px;height:7px;border-radius:50%;background:#33e299;box-shadow:0 0 0 0 rgba(51,226,153,.6);animation:pulse 2s infinite}
+.tokens{
+  display:flex;flex-direction:column;line-height:1.2;text-align:right;white-space:nowrap;
+}
+.tokens .t-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.tokens .t-value{font-family:var(--font-mono);font-size:14px;color:var(--lime);text-shadow:0 0 14px rgba(209,254,23,.5)}
+.nav-cta{padding:10px 18px;font-size:13px;border-radius:11px}
+.hamburger{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--stroke);place-items:center;background:rgba(255,255,255,.03)}
+.hamburger svg{width:20px;height:20px}
+.mobile-menu{
+  display:none;position:fixed;top:84px;left:3%;right:3%;z-index:99;
+  background:rgba(2,18,17,.96);border:1px solid var(--stroke);border-radius:20px;
+  padding:16px;backdrop-filter:blur(24px);flex-direction:column;gap:6px;box-shadow:var(--shadow);
+}
+.mobile-menu.open{display:flex}
+.mobile-menu .nav-link{padding:13px 16px;font-size:15px}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;padding:160px 0 90px;position:relative;overflow:hidden}
+#heroParticles{position:absolute;inset:0;z-index:-1;opacity:.8}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.hero h1{font-size:clamp(40px,6.2vw,76px);font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.hero h1 .grad{
+  background:linear-gradient(100deg,var(--lime) 0%,var(--cyan) 55%,var(--emerald) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px rgba(209,254,23,.15);
+}
+.hero .lede{margin-top:24px;font-size:18px;color:var(--muted);max-width:560px}
+.hero-ctas{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+.hero-feats{display:flex;gap:26px;margin-top:44px;flex-wrap:wrap}
+.hero-feat{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.hero-feat .ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--cyan-soft);border:1px solid var(--stroke);color:var(--cyan)}
+.hero-feat .ico svg{width:18px;height:18px}
+
+/* floating 3D HUD badges */
+.hud{position:relative}
+.hud-badge{
+  position:absolute;z-index:5;padding:16px 20px;border-radius:18px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--ink);
+  background:var(--glass-strong);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 20px 50px -18px rgba(0,0,0,.7), inset 0 0 20px rgba(12,150,156,.06);
+  display:flex;flex-direction:column;gap:8px;min-width:200px;
+  animation:floatY 6s ease-in-out infinite;
+  transform-style:preserve-3d;
+}
+.hud-badge .hb-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hud-badge .hb-status{display:flex;align-items:center;gap:7px;color:var(--lime)}
+.hud-badge .hb-status .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:pulse 1.6s infinite}
+.hud-badge .hb-label{color:var(--muted);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase}
+.hud-badge .hb-value{font-size:19px;color:var(--ink);letter-spacing:.02em}
+.hud-badge .hb-bar{height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.hud-badge .hb-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--lime))}
+.hud-b1{top:-30px;left:-46px;animation-delay:0s}
+.hud-b2{bottom:70px;left:-70px;animation-delay:1.4s}
+.hud-b3{top:24%;right:-62px;animation-delay:2.6s}
+.hud-orn{position:absolute;border-radius:24px;border:1px dashed rgba(101,224,218,.22);z-index:0}
+.hud-orn.o1{inset:12% 10% 6% 6%;animation:spin 40s linear infinite}
+.hud-orn.o2{inset:30% -8% 26% 20%;border-color:rgba(209,254,23,.16);animation:spin 26s linear infinite reverse}
+
+/* prompt playground card */
+.playground{margin-top:56px;position:relative}
+.pg-card{padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.pg-card::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 160px at 85% 0%, rgba(209,254,23,.07), transparent 70%);pointer-events:none}
+.pg-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.pg-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase}
+.pg-row{display:flex;gap:12px;flex-wrap:wrap}
+.pg-input{
+  flex:1;min-width:260px;display:flex;align-items:center;gap:12px;
+  background:rgba(0,0,0,.32);border:1px solid var(--stroke);border-radius:14px;
+  padding:0 16px;transition:border-color .25s;
+}
+.pg-input:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(12,150,156,.14)}
+.pg-input svg{width:18px;height:18px;color:var(--cyan);flex:none}
+.pg-input input{flex:1;background:transparent;border:none;outline:none;color:var(--ink);font-size:15px;padding:15px 0}
+.pg-input input::placeholder{color:var(--muted)}
+.pg-enhance{
+  min-height:0;max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .5s var(--ease), opacity .4s, margin .4s;
+}
+.pg-enhance.show{max-height:200px;opacity:1;margin-top:14px}
+.pg-enhance-box{
+  background:linear-gradient(120deg,rgba(12,150,156,.14),rgba(209,254,23,.07));
+  border:1px solid rgba(12,150,156,.4);border-radius:14px;padding:14px 16px;
+  font-family:var(--font-mono);font-size:13px;color:var(--ink);line-height:1.7;
+}
+.pg-enhance-box .caret{display:inline-block;width:8px;height:15px;background:var(--lime);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+
+/* ===== TICKER MARQUEE ===== */
+.ticker{position:relative;padding:26px 0;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);background:rgba(3,23,22,.6);overflow:hidden}
+.ticker-track{display:flex;gap:48px;width:max-content;animation:scrollX 36s linear infinite}
+.ticker-item{display:flex;align-items:center;gap:14px;font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.ticker-item .star{color:var(--lime)}
+
+/* ===== AI STUDIO ===== */
+.studio-card{padding:26px;overflow:hidden}
+.studio-top{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-bottom:24px}
+.control-group{margin-bottom:20px}
+.control-label{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.control-label svg{width:15px;height:15px;color:var(--cyan)}
+.model-list{display:flex;flex-wrap:wrap;gap:10px}
+.model-pill{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;padding:10px 15px;
+  border-radius:12px;border:1px solid var(--stroke);background:rgba(255,255,255,.025);color:var(--muted);
+  transition:.25s;display:flex;align-items:center;gap:8px;
+}
+.model-pill .m-ico{width:16px;height:16px;opacity:.8}
+.model-pill:hover{border-color:var(--cyan);color:var(--ink)}
+.model-pill.active{background:var(--cyan-soft);border-color:var(--cyan);color:var(--ink);box-shadow:0 0 20px rgba(12,150,156,.25)}
+.aspect-list{display:flex;gap:10px;flex-wrap:wrap}
+.aspect-pill{
+  font-family:var(--font-mono);font-size:11.5px;padding:10px 16px;border-radius:12px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.025);color:var(--muted);transition:.25s;
+}
+.aspect-pill:hover{border-color:var(--cyan);color:var(--ink)}
+.aspect-pill.active{background:var(--lime-soft);border-color:var(--stroke-lime);color:var(--lime)}
+.studio-prompt{display:flex;gap:12px;flex-wrap:wrap}
+.studio-prompt input{
+  flex:1;min-width:240px;background:rgba(0,0,0,.32);border:1px solid var(--stroke);border-radius:14px;
+  padding:15px 18px;color:var(--ink);font-size:14.5px;outline:none;transition:border-color .25s;
+}
+.studio-prompt input:focus{border-color:var(--cyan)}
+.panel{
+  background:rgba(0,0,0,.32);border:1px solid var(--stroke);border-radius:var(--r-md);
+  padding:16px;height:100%;display:flex;flex-direction:column;gap:12px;
+}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.terminal-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.terminal-title .dot{width:6px;height:6px;border-radius:50%;background:#ff5f57}
+.terminal-title .dot:nth-child(2){background:#febc2e}
+.terminal-title .dot:nth-child(3){background:#28c840}
+.terminal-body{font-family:var(--font-mono);font-size:12.5px;color:#b9dedb;line-height:1.85;flex:1;min-height:120px;max-height:200px;overflow-y:auto}
+.terminal-body .line{display:flex;gap:8px}
+.terminal-body .prompt-sym{color:var(--lime)}
+.terminal-body .dim{color:var(--muted)}
+.terminal-body .cursor{display:inline-block;width:7px;height:13px;background:var(--lime);vertical-align:-2px;animation:blink .9s steps(1) infinite}
+.progress{height:6px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--lime));transition:width .2s linear;box-shadow:0 0 12px rgba(209,254,23,.5)}
+.canvas-shell{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--stroke);background:#000;aspect-ratio:16/9;display:grid;place-items:center}
+.canvas-shell[data-aspect="9/16"]{aspect-ratio:9/16;max-height:520px;width:auto;max-width:100%;margin-inline:auto}
+.canvas-shell canvas{width:100%;height:100%;display:block}
+.canvas-ghost{position:absolute;inset:0;display:grid;place-items:center;flex-direction:column;gap:14px;color:var(--muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:radial-gradient(circle at 50% 40%, rgba(12,150,156,.16), transparent 70%)}
+.canvas-ghost svg{width:48px;height:48px;color:var(--cyan);opacity:.6;animation:floatY 4s ease-in-out infinite}
+.studio-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.gen-status{font-family:var(--font-mono);font-size:11.5px;color:var(--lime);letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.gen-status .spinner{width:14px;height:14px;border:2px solid rgba(209,254,23,.25);border-top-color:var(--lime);border-radius:50%;animation:spin .8s linear infinite}
+.gallery{margin-top:22px;border-top:1px solid var(--stroke);padding-top:18px}
+.gallery-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.gallery-reel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-thumb{aspect-ratio:1;border-radius:14px;overflow:hidden;border:1px solid var(--stroke);cursor:pointer;transition:.3s;background:#000;position:relative}
+.gallery-thumb:hover{transform:translateY(-4px) scale(1.02);border-color:var(--cyan)}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+.gallery-thumb .g-meta{position:absolute;inset:auto 0 0 0;padding:18px 10px 8px;font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+
+/* ===== RIGS GRID ===== */
+.rigs-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-bottom:34px}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-chip{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;padding:10px 18px;border-radius:999px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.025);color:var(--muted);transition:.25s;text-transform:uppercase;
+}
+.filter-chip:hover{border-color:var(--cyan);color:var(--ink)}
+.filter-chip.active{background:var(--lime);color:#081010;border-color:var(--lime);box-shadow:0 6px 24px -6px rgba(209,254,23,.5)}
+.search-box{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:1px solid var(--stroke);border-radius:14px;padding:0 16px;min-width:260px;transition:border-color .25s}
+.search-box:focus-within{border-color:var(--cyan)}
+.search-box svg{width:17px;height:17px;color:var(--cyan)}
+.search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--ink);padding:13px 0;font-size:14px}
+.currency-toggle{display:flex;background:rgba(0,0,0,.35);border:1px solid var(--stroke);border-radius:12px;padding:4px;gap:4px}
+.currency-toggle button{font-family:var(--font-mono);font-size:12px;padding:8px 14px;border-radius:9px;color:var(--muted);transition:.2s}
+.currency-toggle button.active{background:var(--cyan-soft);color:var(--cyan);border:1px solid rgba(12,150,156,.4)}
+.rigs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.rig-card{
+  position:relative;overflow:hidden;transition:transform .3s var(--ease), box-shadow .3s;padding:18px;
+  transform-style:preserve-3d;will-change:transform;
+}
+.rig-card:hover{box-shadow:0 30px 70px -24px rgba(0,0,0,.8), 0 0 0 1px rgba(12,150,156,.35)}
+.rig-media{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;background:#000;transform:translateZ(20px)}
+.rig-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.rig-card:hover .rig-media img{transform:scale(1.06)}
+.rig-tag{position:absolute;top:12px;left:12px;background:var(--lime);color:#081010;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;padding:6px 11px;border-radius:999px;text-transform:uppercase;font-weight:600}
+.rig-prime{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:6px;background:rgba(2,18,17,.85);border:1px solid rgba(255,153,0,.5);color:var(--amber);font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;padding:6px 10px;border-radius:999px}
+.rig-body{padding:16px 2px 2px;transform:translateZ(12px)}
+.rig-brand{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
+.rig-name{font-size:18px;font-weight:700;margin:6px 0 12px;letter-spacing:-.01em}
+.rig-specs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.spec{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);border:1px solid var(--stroke);padding:5px 10px;border-radius:8px}
+.rig-price-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+.rig-price{font-family:var(--font-mono);font-size:21px;color:var(--lime);letter-spacing:-.02em}
+.rig-price-old{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-decoration:line-through;margin-right:6px}
+.rig-cta{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+  background:linear-gradient(135deg,#232f3e,#131a22);color:#ffd814;border-radius:12px;
+  padding:13px;font-weight:600;font-size:13.5px;border:1px solid rgba(255,216,20,.3);
+  transition:.25s;
+}
+.rig-cta:hover{background:linear-gradient(135deg,#2c3d50,#1a222c);transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
+.rig-cta svg{width:16px;height:16px;color:var(--amber)}
+
+/* ===== VAULT ===== */
+.vault-card{padding:26px;background:var(--glass);border:1px solid var(--stroke);border-radius:var(--r-lg);backdrop-filter:blur(20px)}
+.coupon-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
+.coupon{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;padding:11px 18px;border-radius:12px;
+  border:1px dashed var(--stroke-lime);background:var(--lime-soft);color:var(--lime);
+  transition:.25s;display:flex;align-items:center;gap:9px;
+}
+.coupon:hover{border-style:solid;transform:translateY(-2px);box-shadow:0 8px 22px -8px rgba(209,254,23,.4)}
+.coupon.active{background:var(--lime);color:#081010;border-style:solid}
+.coupon .tag{background:rgba(0,0,0,.18);padding:3px 8px;border-radius:6px;font-size:9px;letter-spacing:.14em}
+.coupon.active .tag{background:rgba(0,0,0,.14)}
+.vault-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.vault-card-item{
+  padding:22px;background:rgba(4,28,27,.7);border:1px solid var(--stroke);border-radius:var(--r-md);
+  position:relative;overflow:hidden;transition:.3s;display:flex;flex-direction:column;
+}
+.vault-card-item::before{content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(12,150,156,.28),transparent 70%)}
+.vault-card-item:hover{transform:translateY(-5px);border-color:rgba(12,150,156,.5);box-shadow:0 22px 48px -20px rgba(0,0,0,.7)}
+.vault-cat{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.vault-name{font-size:19px;font-weight:700;margin-bottom:8px}
+.vault-desc{font-size:13.5px;color:var(--muted);flex:1;margin-bottom:16px}
+.vault-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.vault-price{font-family:var(--font-mono);font-size:20px;color:var(--lime)}
+.vault-price .old{font-size:12px;color:var(--muted);text-decoration:line-through;margin-right:8px}
+.vault-code{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--stroke);padding:5px 10px;border-radius:8px;background:rgba(0,0,0,.25)}
+.vault-btn{width:100%;padding:12px;border-radius:12px;background:var(--cyan-soft);border:1px solid rgba(12,150,156,.4);color:var(--cyan);font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.25s}
+.vault-btn:hover{background:rgba(12,150,156,.25);transform:translateY(-2px)}
+.vault-btn svg{width:15px;height:15px}
+
+/* ===== STATS ===== */
+.stats{padding:90px 0;position:relative}
+.stats-bg{position:absolute;inset:0;background:radial-gradient(700px 400px at 50% 50%, rgba(12,150,156,.14), transparent 70%);pointer-events:none}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.stat-card{padding:36px 24px;text-align:center;position:relative;overflow:hidden;transition:.3s}
+.stat-card:hover{transform:translateY(-6px);border-color:rgba(12,150,156,.5)}
+.stat-card::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:3px;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--lime));opacity:0;transition:.3s}
+.stat-card:hover::after{opacity:1}
+.stat-num{font-family:var(--font-display);font-size:clamp(36px,4.4vw,54px);font-weight:800;color:var(--lime);line-height:1;text-shadow:0 0 30px rgba(209,254,23,.3)}
+.stat-suffix{font-size:.55em;color:var(--ink)}
+.stat-label{margin-top:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* ===== TESTIMONIALS ===== */
+.t-carousel{position:relative;margin-top:46px}
+.t-viewport{overflow:hidden;border-radius:var(--r-lg)}
+.t-track{display:flex;transition:transform .65s var(--ease)}
+.t-slide{min-width:100%;padding:4px}
+.t-card{padding:38px;display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:center}
+.t-quote{font-size:20px;line-height:1.7;color:var(--ink);font-weight:500}
+.t-quote .mark{color:var(--lime);font-family:var(--font-display);font-size:40px;line-height:0;vertical-align:-14px}
+.t-person{display:flex;align-items:center;gap:14px;margin-top:24px}
+.t-avatar{width:48px;height:48px;border-radius:50%;border:2px solid var(--cyan);object-fit:cover}
+.t-name{font-weight:700;font-size:15px}
+.t-role{font-size:12.5px;color:var(--muted);font-family:var(--font-mono)}
+.verified{display:inline-flex;align-items:center;gap:5px;background:rgba(30,160,120,.12);border:1px solid rgba(64,224,150,.3);color:#6ee7b7;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;padding:4px 9px;border-radius:99px;margin-top:6px}
+.stars{display:flex;gap:4px;color:var(--amber);margin-bottom:16px}
+.stars svg{width:18px;height:18px;fill:var(--amber)}
+.t-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:28px}
+.t-dots{display:flex;gap:8px}
+.t-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15);transition:.3s;cursor:pointer}
+.t-dot.active{background:var(--lime);box-shadow:0 0 12px var(--lime);width:26px;border-radius:99px}
+.t-arrow{width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke);display:grid;place-items:center;transition:.25s;background:rgba(255,255,255,.02)}
+.t-arrow:hover{border-color:var(--cyan);background:var(--cyan-soft);transform:translateY(-2px)}
+.t-arrow svg{width:18px;height:18px}
+
+/* ===== CTA BAND ===== */
+.cta-band{position:relative;overflow:hidden;padding:80px 0}
+.cta-card{padding:70px 50px;text-align:center;position:relative;overflow:hidden}
+.cta-card::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 260px at 50% 0%, rgba(209,254,23,.14), transparent 70%);pointer-events:none}
+.cta-title{font-size:clamp(30px,4vw,46px);margin-bottom:14px}
+.cta-sub{color:var(--muted);max-width:560px;margin:0 auto 32px;font-size:16.5px}
+
+/* ===== FOOTER ===== */
+.footer{border-top:1px solid var(--stroke);background:rgba(1,12,12,.7);padding:70px 0 0;position:relative;backdrop-filter:blur(10px)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;padding-bottom:50px}
+.footer-brand p{margin-top:16px;color:var(--muted);font-size:14px;max-width:300px}
+.footer-col h4{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:11px}
+.footer-links a{font-size:14px;color:var(--muted);transition:.2s;display:flex;align-items:center;gap:8px}
+.footer-links a:hover{color:var(--ink);transform:translateX(4px)}
+.footer-links a svg{width:14px;height:14px;color:var(--cyan)}
+.newsletter form{display:flex;flex-direction:column;gap:12px}
+.newsletter input{background:rgba(0,0,0,.35);border:1px solid var(--stroke);border-radius:12px;padding:14px 16px;color:var(--ink);outline:none;font-size:14px;transition:border-color .25s}
+.newsletter input:focus{border-color:var(--cyan)}
+.newsletter .btn{width:100%}
+.footer-bottom{border-top:1px solid var(--stroke);padding:24px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.footer-legal{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.footer-legal a:hover{color:var(--lime)}
+.footer-social{display:flex;gap:10px}
+.social-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--stroke);display:grid;place-items:center;color:var(--muted);transition:.25s;background:rgba(255,255,255,.02)}
+.social-btn:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-3px)}
+.social-btn svg{width:17px;height:17px}
+.disclaimer{margin-top:26px;padding:18px;border:1px solid rgba(255,153,0,.25);background:rgba(255,153,0,.05);border-radius:14px;font-size:12.5px;color:#c9a67c;line-height:1.7}
+
+/* ===== TOAST ===== */
+.toast-wrap{position:fixed;top:90px;right:20px;z-index:200;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{
+  background:rgba(3,28,27,.95);border:1px solid rgba(12,150,156,.45);color:var(--ink);
+  padding:14px 18px;border-radius:14px;font-size:13.5px;font-weight:500;
+  display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);
+  transform:translateX(120%);transition:transform .45s var(--ease);max-width:340px;pointer-events:auto;
+}
+.toast.show{transform:translateX(0)}
+.toast.success{border-color:rgba(209,254,23,.5)}
+.toast.success .t-ico{color:var(--lime)}
+.toast .t-ico{width:20px;height:20px;flex:none}
+.toast .t-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--lime-soft);flex:none}
+
+/* ===== ANIMATIONS ===== */
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(51,226,153,.5)}70%{box-shadow:0 0 0 9px rgba(51,226,153,0)}100%{box-shadow:0 0 0 0 rgba(51,226,153,0)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scrollX{to{transform:translateX(-50%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{to{background-position:-200% 0}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.shimmer{
+  background:linear-gradient(110deg,rgba(255,255,255,.04) 30%,rgba(209,254,23,.18) 50%,rgba(255,255,255,.04) 70%);
+  background-size:200% 100%;animation:shimmer 3s linear infinite;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:60px}
+  .hud-b1{left:0}.hud-b2{left:0;bottom:-10px}.hud-b3{right:0}
+  .studio-top{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .hamburger{display:grid}
+  .nav-meta .status-pill{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .t-card{grid-template-columns:1fr;padding:26px}
+}
+@media (max-width:640px){
+  .section{padding:80px 0}
+  .rigs-grid{grid-template-columns:1fr}
+  .gallery-reel{grid-template-columns:repeat(2,1fr)}
+  .hero{padding-top:130px}
+  .hero-ctas .btn{width:100%}
+  .nav .nav-cta{display:none}
+  .tokens .t-label{display:none}
+  .stat-card{padding:26px 16px}
+  .cta-card{padding:50px 24px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{justify-content:center;text-align:center}
+  .hud-badge{transform:scale(.85);min-width:170px}
+  .hud-b1{top:-20px;left:-8px}
+  .hud-b2{bottom:0;left:-12px}
+  .hud-b3{top:auto;bottom:-20px;right:0}
+  .hud-orn{display:none}
+  .filter-bar{width:100%}
+  .search-box{width:100%;min-width:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== BACKGROUND LAYERS ===== -->
+<div class="scene" aria-hidden="true"></div>
+<div class="glow-orb g1" aria-hidden="true"></div>
+<div class="glow-orb g2" aria-hidden="true"></div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="nav" id="navbar">
+  <a class="brand" href="#top">
+    <span class="mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+    </span>
+    AI TOOLKIT <span class="lime">PRO</span>
+  </a>
+
+  <nav class="nav-links" aria-label="Primary">
+    <a class="nav-link active" href="#rigs">70+ Creator Store</a>
+    <a class="nav-link" href="#studio">Free AI Studio</a>
+    <a class="nav-link" href="#models">Claude Opus 5</a>
+    <a class="nav-link" href="#vault">Micro-SaaS Vault</a>
+    <a class="nav-link" href="https://open-higgsfield-free.vercel.app/" target="_blank">OpenHiggsfield 3D</a>
+    <a class="nav-link" href="/creator-gear.html">Catalog (70)</a>
+  </nav>
+
+  <div class="nav-meta">
+    <div class="status-pill"><span class="pulse"></span> SYSTEMS OPERATIONAL · 60FPS</div>
+    <div class="tokens">
+      <span class="t-label">Live Tokens · Mercury 3</span>
+      <span class="t-value" id="tokenCounter">0</span>
+    </div>
+    <a href="#studio" class="btn btn-primary nav-cta">Launch Studio</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a class="nav-link active" href="#rigs">70+ Creator Store</a>
+  <a class="nav-link" href="#studio">Free AI Studio</a>
+  <a class="nav-link" href="#models">Claude Opus 5</a>
+  <a class="nav-link" href="#vault">Micro-SaaS Vault</a>
+  <a class="nav-link" href="https://open-higgsfield-free.vercel.app/" target="_blank">OpenHiggsfield 3D</a>
+  <a class="nav-link" href="/creator-gear.html">Catalog (70)</a>
+</div>
+
+<main id="top">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <canvas id="heroParticles" aria-hidden="true"></canvas>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="kicker"><span class="dot"></span> Parallel Diffusion dLLM Active</span>
+        <span class="chip">Launch Day · v3.0</span>
+      </div>
+      <h1>The Sovereign Creator &amp; AI Hardware <span class="grad">Operating System</span></h1>
+      <p class="lede">One autonomous platform for creative rigs, diffusion intelligence, and unencrypted micro-SaaS source. We give you the hardware stack, the model access, and the codebase — all in a zero-fee sovereign toolkit.</p>
+
+      <div class="hero-ctas">
+        <a href="#studio" class="btn btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          Generate in AI Studio — Free
+        </a>
+        <a href="#rigs" class="btn btn-ghost">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Browse 70+ Creator Rigs
+        </a>
+      </div>
+
+      <div class="hero-feats">
+        <div class="hero-feat"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Zero-Cost Access</div>
+        <div class="hero-feat"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span> 1-Day Amazon Delivery</div>
+        <div class="hero-feat"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span> 0% Platform Fees</div>
+      </div>
+    </div>
+
+    <!-- floating HUD badges -->
+    <div class="hud" aria-hidden="true">
+      <div class="hud-orn o1"></div>
+      <div class="hud-orn o2"></div>
+
+      <div class="hud-badge hud-b1">
+        <div class="hb-top">
+          <span class="hb-status"><span class="dot"></span> dLLM</span>
+          <span class="hb-label">Model Engine</span>
+        </div>
+        <span class="hb-value">Parallel Diffusion Active</span>
+        <div class="hb-bar"><i style="width:92%"></i></div>
+      </div>
+
+      <div class="hud-badge hud-b2">
+        <div class="hb-top">
+          <span class="hb-status"><span class="dot"></span> POOL</span>
+          <span class="hb-label">Token Ledger</span>
+        </div>
+        <span class="hb-value">100M Tokens</span>
+        <div class="hb-bar"><i style="width:64%;background:linear-gradient(90deg,var(--amber),var(--lime))"></i></div>
+      </div>
+
+      <div class="hud-badge hud-b3">
+        <div class="hb-top">
+          <span class="hb-status"><span class="dot"></span> FEE</span>
+          <span class="hb-label">Platform Economics</span>
+        </div>
+        <span class="hb-value">0% Platform Fees</span>
+        <div class="hb-bar"><i style="width:100%;background:linear-gradient(90deg,var(--lime),var(--cyan))"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- prompt playground -->
+  <div class="container playground">
+    <div class="pg-card glass">
+      <div class="pg-head">
+        <span class="pg-title">⚡ Prompt Playground — Mercury 3 Parallel Diffusion</span>
+        <span class="chip">Satellite · Free forever</span>
+      </div>
+      <div class="pg-row">
+        <div class="pg-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="heroPrompt" placeholder="Describe any image — e.g. neon cyborg samurai in a cyberpunk city…">
+        </div>
+        <button class="btn btn-ghost" id="heroEnhance">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+          Enhance Prompt
+        </button>
+        <button class="btn btn-primary" id="heroGenerate">
+          Generate Free
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="pg-enhance" id="heroEnhanceBox">
+        <div class="pg-enhance-box" id="heroEnhanceText"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack">
+    <!-- duplicated in JS for seamless loop -->
+  </div>
+</div>
+
+<!-- ===== FREE AI STUDIO ===== -->
+<section class="section" id="studio">
+  <div class="container">
+    <div class="reveal">
+      <span class="kicker"><span class="dot"></span> Free AI Studio</span>
+      <h2 class="section-title">Live Generation Canvas · <span class="cyan">Mercury 3</span></h2>
+      <p class="section-sub">A fully functional in-browser diffusion playground. Select a model, flip the aspect, and watch the parallel diffusion engine enhance and render in real time.</p>
+    </div>
+
+    <div class="studio-card glass reveal" style="margin-top:44px">
+      <div class="studio-top">
+        <!-- controls -->
+        <div>
+          <div class="control-group">
+            <div class="control-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg> Diffusion Model</div>
+            <div class="model-list" id="modelList"></div>
+          </div>
+          <div class="control-group">
+            <div class="control-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18M9 21V9"/></svg> Aspect Ratio</div>
+            <div class="aspect-list" id="aspectList"></div>
+          </div>
+          <div class="control-group" style="margin-bottom:0">
+            <div class="control-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg> Prompt</div>
+            <div class="studio-prompt">
+              <input type="text" id="studioPrompt" placeholder="Type a prompt… e.g. bioluminescent jellyfish floating over a neon reef">
+              <button class="btn btn-cyan" id="studioGenerate">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                Diffuse Now
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- telemetry panel -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="terminal-title"><span class="dot"></span><span class="dot"></span><span class="dot"></span> MERCURY-3 · TELEMETRY</span>
+            <span class="chip" id="activeModelChip">flux.1</span>
+          </div>
+          <div class="terminal-body" id="terminalBody"></div>
+          <div class="progress"><i id="progressBar"></i></div>
+        </div>
+      </div>
+
+      <!-- canvas viewport -->
+      <div class="canvas-shell" id="canvasShell">
+        <div class="canvas-ghost" id="canvasGhost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <span>Canvas idle — prompt to diffuse</span>
+        </div>
+        <canvas id="genCanvas"></canvas>
+      </div>
+
+      <div class="studio-actions">
+        <button class="btn btn-ghost" id="downloadBtn" disabled style="opacity:.45;pointer-events:none">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download PNG
+        </button>
+        <span class="gen-status" id="genStatus" style="display:none"><span class="spinner"></span> Diffusing…</span>
+      </div>
+
+      <!-- recent creations -->
+      <div class="gallery">
+        <div class="gallery-head">
+          <span class="terminal-title">RECENT CREATIONS · SESSION</span>
+          <span class="chip" id="galleryCount">0 renders</span>
+        </div>
+        <div class="gallery-reel" id="galleryReel">
+          <div style="grid-column:1/-1;color:var(--muted);font-family:var(--font-mono);font-size:12px;text-align:center;padding:30px 0">No renders yet — generate your first piece above. ⚡</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RIGS ===== -->
+<section class="section" id="rigs">
+  <div class="container">
+    <div class="rigs-head reveal">
+      <div>
+        <span class="kicker"><span class="dot"></span> 70+ Flagship Rig Store</span>
+        <h2 class="section-title">Creator Hardware <span class="cyan">Command Center</span></h2>
+        <p class="section-sub">Verified flagship rigs — cameras, audio, desks, displays, and AI GPUs — delivered in 1 day via Amazon Prime.</p>
+      </div>
+      <div class="filter-bar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="rigSearch" placeholder="Search rigs, brands, specs…">
+        </div>
+        <div class="currency-toggle" id="currencyToggle">
+          <button class="active" data-cur="inr">₹ INR</button>
+          <button data-cur="usd">$ USD</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar reveal" style="margin-bottom:30px" id="rigFilters"></div>
+
+    <div class="rigs-grid" id="rigsGrid"></div>
+  </div>
+</section>
+
+<!-- ===== CLAUDE OPUS 5 / MODELS STRIP ===== -->
+<section class="section" id="models" style="padding-top:40px">
+  <div class="container reveal">
+    <div class="cta-card glass">
+      <span class="kicker"><span class="dot"></span> Model Access</span>
+      <h2 class="section-title" style="margin-top:16px">Claude Opus 5 · <span class="lime">Now in Toolkit</span></h2>
+      <p class="section-sub">Trigger the most capable frontier model for agentic coding, research, and content ops — alongside 38 open models (Llama 4, Qwen 3, DeepSeek R2, Flux.1, SDXL, and more). All under one API, zero setup fees.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px">
+        <span class="chip">37 Open Weights</span>
+        <span class="chip">1M Token Context</span>
+        <span class="chip">Parallel Diffusion Output</span>
+        <span class="chip">Function Calling v3</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MICRO-SAAS VAULT ===== -->
+<section class="section" id="vault">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:44px">
+      <span class="kicker"><span class="dot"></span> Micro-SaaS Vault</span>
+      <h2 class="section-title">Unencrypted Source Code <span class="cyan">Vault</span></h2>
+      <p class="section-sub" style="margin-inline:auto">Complete, modular, production-grade codebases — yours to own. Pick a coupon, apply it in one click, and it copies to your clipboard instantly.</p>
+    </div>
+
+    <div class="coupon-row reveal" style="justify-content:center">
+      <button class="coupon" data-coupon="LAUNCH20">LAUNCH20 <span class="tag">−20%</span></button>
+      <button class="coupon" data-coupon="FLAT50">FLAT50 <span class="tag">−₹50</span></button>
+      <button class="coupon" data-coupon="AGENCY100">AGENCY100 <span class="tag">−₹100</span></button>
+    </div>
+
+    <div class="filter-bar reveal" style="justify-content:center;margin-bottom:34px" id="vaultFilters"></div>
+    <div class="vault-grid" id="vaultGrid"></div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats">
+  <div class="stats-bg"></div>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card glass reveal">
+        <div class="stat-num"><span class="stat-count" data-target="100">0</span><span class="stat-suffix">M+</span></div>
+        <div class="stat-label">Tokens Processed</div>
+      </div>
+      <div class="stat-card glass reveal">
+        <div class="stat-num"><span class="stat-count" data-target="70">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Verified Rigs</div>
+      </div>
+      <div class="stat-card glass reveal">
+        <div class="stat-num"><span class="stat-count" data-target="38">0</span><span class="stat-suffix"></span></div>
+        <div class="stat-label">Open Models</div>
+      </div>
+      <div class="stat-card glass reveal">
+        <div class="stat-num"><span class="stat-count" data-target="0">0</span><span class="stat-suffix">%</span></div>
+        <div class="stat-label">Platform Fees</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section" id="community">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="kicker"><span class="dot"></span> Wall of Love</span>
+      <h2 class="section-title">Trusted by <span class="cyan">1,200+</span> Sovereign Creators</h2>
+    </div>
+
+    <div class="t-carousel reveal">
+      <div class="t-viewport glass">
+        <div class="t-track" id="tTrack"></div>
+      </div>
+      <div class="t-controls">
+        <button class="t-arrow" id="tPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="t-dots" id="tDots"></div>
+        <button class="t-arrow" id="tNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BAND ===== -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-card glass reveal">
+      <span class="kicker"><span class="dot"></span> Join The Sovereignty Push</span>
+      <h2 class="cta-title">Own Your Stack. Own Your Output. <span class="lime">Own Your Code.</span></h2>
+      <p class="cta-sub">70+ rigs. Free diffusion studio. Unencrypted vaults. 10M free tokens for every new member — no card required.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="#studio" class="btn btn-primary">Start Free — It's Sovereign</a>
+        <a href="#vault" class="btn btn-ghost">Open The Vault</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+          AI TOOLKIT <span class="lime">PRO</span>
+        </a>
+        <p>The Sovereign Creator &amp; AI Hardware Operating System. Zero platform fees, 1-day Prime delivery, unencrypted source codes, and a free parallel-diffusion studio.</p>
+        <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+          <span class="chip">Est. 2026</span>
+          <span class="chip">Made in Guwahati 🇮🇳</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <div class="footer-links">
+          <a href="/creator-gear.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg> 70+ Creator Gear Catalog</a>
+          <a href="/free-ai-studio.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg> Free AI Studio (Inception)</a>
+          <a href="https://open-higgsfield-free.vercel.app/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg> OpenHiggsfield 3D Studio</a>
+          <a href="/source-codes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> Micro-SaaS Vault (33 Rigs)</a>
+          <a href="/free-claude-opus-5.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Claude Opus 5 Portal</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <div class="footer-links">
+          <a href="/about.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> About Sovereign AI</a>
+          <a href="/contact.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact &amp; Support</a>
+          <a href="/privacy-policy.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg> Privacy Policy</a>
+          <a href="/terms.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg> Terms &amp; Conditions</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>The Dispatch</h4>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">One monthly briefing: new rigs, model drops, and vault unlocks. No spam, ever.</p>
+        <form class="newsletter" id="newsletterForm">
+          <input type="email" id="newsletterEmail" placeholder="you@creator.in" required>
+          <button type="submit" class="btn btn-primary">Subscribe Free</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong style="color:var(--amber)">Affiliate Disclosure:</strong> As an Amazon Associate, AI TOOLKIT PRO (tag: <span class="mono">aitoolkitpro-21</span>) earns from qualifying purchases made through rig links on this page. This never changes the price you pay — it helps fund the free studio and the vault.
+    </div>
+
+    <div class="footer-bottom">
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">© 2026 AI TOOLKIT PRO · Sovereign by design</span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="#" class="social-btn" aria-label="Globe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+        <a href="#" class="social-btn" aria-label="At sign"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== TOASTS ===== -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ==========================================================================
+   AI TOOLKIT PRO — application script (vanilla JS)
+   ========================================================================== */
+(() => {
+  "use strict";
+
+  /* ---------- tiny helpers ---------- */
+  const $  = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  const fmtIN = (n) => n.toLocaleString("en-IN");
+  const esc = (s) => String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+
+  /* ============================================================
+     TOASTS
+     ============================================================ */
+  const toastWrap = $("#toastWrap");
+  function toast(msg, type = "info") {
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.innerHTML = `<span class="t-icon"><svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${
+      type === "success"
+        ? '<path d="M20 6 9 17l-5-5"/>'
+        : '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'
+    }</svg></span><span>${esc(msg)}</span>`;
+    toastWrap.appendChild(el);
+    requestAnimationFrame(() => el.classList.add("show"));
+    setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 500); }, 3400);
+  }
+
+  /* ============================================================
+     NAV — mobile menu, active links, token telemetry
+     ============================================================ */
+  const nav = $("#navbar");
+  const menu = $("#mobileMenu");
+  const burger = $("#hamburger");
+  burger.addEventListener("click", () => menu.classList.toggle("open"));
+  $$(".mobile-menu .nav-link").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
+
+  // active section highlighting
+  const sections = ["studio", "rigs", "models", "vault", "community"];
+  const navLinks = $$(".nav-link");
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + id));
+      }
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  sections.forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+
+  // live token telemetry (fake increment ~ hundreds/sec)
+  let tokens = 148221634;
+  const tokEl = $("#tokenCounter");
+  function tickTokens() {
+    tokens += Math.floor(Math.random() * 140) + 30;
+    tokEl.textContent = fmtIN(tokens);
+    setTimeout(tickTokens, 480 + Math.random() * 600);
+  }
+  tickTokens();
+
+  /* ============================================================
+     HERO PARTICLE NETWORK (canvas background)
+     ============================================================ */
+  const pCanvas = $("#heroParticles");
+  const pCtx = pCanvas.getContext("2d");
+  let particles = [];
+  function sizeParticles() {
+    const r = pCanvas.parentElement.getBoundingClientRect();
+    pCanvas.width = r.width; pCanvas.height = r.height;
+  }
+  function seedParticles() {
+    const count = Math.min(54, Math.floor((pCanvas.width * pCanvas.height) / 26000));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * pCanvas.width,
+      y: Math.random() * pCanvas.height,
+      vx: (Math.random() - .5) * .35,
+      vy: (Math.random() - .5) * .35,
+      r: Math.random() * 1.8 + .6,
+      hue: Math.random() > .6 ? "209,254,23" : "12,150,156"
+    }));
+  }
+  function drawParticles() {
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 ||  p.x > pCanvas.width) p.vx *= -1;
+      if (p.y < 0 ||  p.y > pCanvas.height) p.vy *= -1;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      pCtx.fillStyle = `rgba(${p.hue},.55)`;
+      pCtx.fill();
+    }
+    // links
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 130) {
+          pCtx.strokeStyle = `rgba(12,150,156,${(1 - d / 130) * .16})`;
+          pCtx.lineWidth = 1;
+          pCtx.beginPath(); pCtx.moveTo(a.x, a.y); pCtx.lineTo(b.x, b.y); pCtx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  sizeParticles(); seedParticles(); drawParticles();
+  addEventListener("resize", () => { sizeParticles(); seedParticles(); });
+
+  /* ============================================================
+     TICKER MARQUEE (duplicate for seamless loop)
+     ============================================================ */
+  const tickWords = ["Parallel Diffusion dLLM", "Claude Opus 5", "Flux.1 Schnell", "SDXL Turbo", "3D Unreal 5", "70+ Rigs", "38 Open Models", "0% Fees", "Micro-SaaS Vault", "Mercury 3"];
+  const tickHTML = tickWords.map(w => `<span class="ticker-item"><span class="star">✦</span> ${w}</span>`).join("");
+  $("#tickerTrack").innerHTML = tickHTML + tickHTML;
+
+  /* ============================================================
+     AI STUDIO — model list, aspect, terminal, canvas rendering
+     ============================================================ */
+  const MODELS = [
+    { id: "flux",    name: "Flux.1 Schnell", badge: "flux.1",  ico: "zap" },
+    { id: "realism", name: "Realism",         badge: "realism", ico: "aperture" },
+    { id: "3d",      name: "3D Unreal 5",    badge: "3d v5",   ico: "box" },
+    { id: "anime",   name: "Anime",          badge: "anime",    ico: "feather" },
+    { id: "sdxl",    name: "SDXL Turbo",      badge: "sdxl-t",   ico: "wind" }
+  ];
+  const ASPECTS = [
+    { id: "16/9", label: "16:9" },
+    { id: "9/16", label: "9:16" },
+    { id: "1/1",  label: "1:1" }
+  ];
+
+  let activeModel = "flux";
+  let activeAspect = "16/9";
+
+  const modelList = $("#modelList");
+  const aspectList = $("#aspectList");
+  const modelChip = $("#activeModelChip");
+
+  // render model pills
+  MODELS.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "model-pill" + (m.id === activeModel ? " active" : "");
+    b.dataset.model = m.id;
+    b.innerHTML = `<svg class="m-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${
+      m.ico === "zap" ? '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>' :
+      m.ico === "aperture" ? '<circle cx="12" cy="12" r="10"/><path d="m14.31 8 5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16 3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/>' :
+      m.ico === "box" ? '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>' :
+      m.ico === "feather" ? '<path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/>' :
+      '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>'
+    }</svg>${m.name}`;
+    b.addEventListener("click", () => {
+      activeModel = m.id;
+      $$(".model-pill", modelList).forEach(p => p.classList.toggle("active", p.dataset.model === m.id));
+      modelChip.textContent = m.badge;
+      logTerminal(`model → ${m.name}`, "dim");
+    });
+    modelList.appendChild(b);
+  });
+
+  // render aspect pills
+  ASPECTS.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "aspect-pill" + (a.id === activeAspect ? " active" : "");
+    b.dataset.aspect = a.id;
+    b.textContent = a.label;
+    b.addEventListener("click", () => {
+      activeAspect = a.id;
+      $$(".aspect-pill", aspectList).forEach(p => p.classList.toggle("active", p.dataset.aspect === a.id));
+      $("#canvasShell").dataset.aspect = a.id;
+      logTerminal(`aspect → ${a.id}`, "dim");
+    });
+    aspectList.appendChild(b);
+  });
+
+  // terminal magic
+  const termBody = $("#terminalBody");
+  const progressBar = $("#progressBar");
+  function logTerminal(txt, cls = "") {
+    const line = document.createElement("div");
+    line.className = "line";
+    line.innerHTML = `<span class="prompt-sym">❯</span><span class="${cls}">${esc(txt)}</span>`;
+    termBody.appendChild(line);
+    termBody.scrollTop = termBody.scrollHeight;
+    if (termBody.children.length > 9) termBody.firstElementChild.remove();
+  }
+  logTerminal("kernel loaded · mercury-3 parallel diffusion", "dim");
+  logTerminal("ready. pick a model and prompt.", "dim");
+
+  /* ---------- canvas generation engine ---------- */
+  const genCanvas = $("#genCanvas");
+  const canvasShell = $("#canvasShell");
+  const ghost = $("#canvasGhost");
+  const ctx = genCanvas.getContext("2d");
+
+  // deterministic PRNG for each render
+  function mulberry32(seed) {
+    let t = seed >>> 0;
+    return () => {
+      t += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t |  1);
+      t ^= t + Math.imul(t ^ t >>> 7, t |  61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function setCanvasSize() {
+    const shellRect = canvasShell.getBoundingClientRect();
+    let w, h;
+    if (activeAspect === "9/16") { h = Math.min(shellRect.height, 520); w = h * 9 / 16; }
+    else { w = shellRect.width; h = w / (activeAspect === "1/1" ? 1 : 16 / 9); }
+    const dpr = Math.min(window.devicePixelRatio ||  1, 2);
+    genCanvas.width = w * dpr; genCanvas.height = h * dpr;
+    genCanvas.style.width = w + "px"; genCanvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { w, h };
+  }
+
+  function radial(ctx, x, y, r, c1, c2) {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, c1); g.addColorStop(1, c2);
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // painting recipes per model
+  const PAINTERS = {
+    flux(w, h, rnd) {
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, "#031716"); bg.addColorStop(1, "#0a2b2a");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 26; i++) {
+        radial(ctx, rnd() * w, rnd() * h, rnd() * 180 + 40,
+          `rgba(${rnd() > .5 ? "209,254,23" : "12,150,156"},${.12 + rnd() * .16})`, "rgba(0,0,0,0)");
+      }
+      // lime glyph mesh
+      ctx.strokeStyle = "rgba(209,254,23,.25)"; ctx.lineWidth = 1.2;
+      for (let i = 0; i < 16; i++) {
+        const x = rnd() * w, y = rnd() * h, s = 20 + rnd() * 60;
+        ctx.beginPath(); ctx.moveTo(x - s / 2, y + s / 2); ctx.lineTo(x, y - s / 2); ctx.lineTo(x + s / 2, y + s / 2);
+        ctx.stroke();
+      }
+    },
+    realism(w, h, rnd) {
+      const bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, "#1a1d22"); bg.addColorStop(.6, "#2c2a28"); bg.addColorStop(1, "#14100c");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      radial(ctx, w * .7, h * .3, h * .6, "rgba(255,153,0,.16)", "rgba(0,0,0,0)");
+      for (let i = 0; i < 14; i++) {
+        radial(ctx, rnd() * w, rnd() * h, rnd() * 140 + 30,
+          `rgba(160,150,140,${.05 + rnd() * .08})`, "rgba(0,0,0,0)");
+      }
+      // film grain
+      ctx.fillStyle = "rgba(255,255,255,.03)";
+      for (let i = 0; i < 400; i++) ctx.fillRect(rnd() * w, rnd() * h, 1, 1);
+    },
+    "3d"(w, h, rnd) {
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, "#070d16"); bg.addColorStop(1, "#0f1e2b");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      radial(ctx, w * .25, h * .3, h * .5, "rgba(12,150,156,.30)", "rgba(0,0,0,0)");
+      radial(ctx, w * .8, h * .7, h * .55, "rgba(255,153,0,.18)", "rgba(0,0,0,0)");
+      // futuristic floor grid
+      ctx.strokeStyle = "rgba(12,150,156,.4)"; ctx.lineWidth = 1;
+      for (let i = 0; i < 14; i++) {
+        const y = h * .6 + i * 24;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+      ctx.strokeStyle = "rgba(12,150,156,.22)";
+      for (let i = 0; i < 14; i++) {
+        const x = (i - 7) * 80 + w / 2;
+        ctx.beginPath(); ctx.moveTo(x, h * .6); ctx.lineTo(x + w * .4, h); ctx.stroke();
+      }
+    },
+    anime(w, h, rnd) {
+      const bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, "#2b1a4a"); bg.addColorStop(.55, "#8a3d6e"); bg.addColorStop(1, "#f29c6e");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      radial(ctx, w * .5, h * .42, h * .35, "rgba(255,220,180,.9)", "rgba(255,180,120,0)");
+      // sun
+      radial(ctx, w * .5, h * .4, 60, "rgba(255,238,200,1)", "rgba(255,200,140,0)");
+      // mountain silhouettes
+      ctx.fillStyle = "rgba(24,14,44,.85)";
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      ctx.lineTo(0, h * .66);
+      ctx.lineTo(w * .3, h * .5);
+      ctx.lineTo(w * .55, h * .7);
+      ctx.lineTo(w * .8, h * .52);
+      ctx.lineTo(w, h * .68);
+      ctx.lineTo(w, h);
+      ctx.closePath(); ctx.fill();
+      // sakura specks
+      ctx.fillStyle = "rgba(255,190,210,.8)";
+      for (let i = 0; i < 80; i++) ctx.fillRect(rnd() * w, rnd() * h * .5, 2, 2);
+    },
+    sdxl(w, h, rnd) {
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, "#0a0f1e"); bg.addColorStop(1, "#16303f");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 10; i++) {
+        const x = w / 2 + (rnd() - .5) * w * .7;
+        const y = h / 2 + (rnd() - .5) * h * .7;
+        radial(ctx, x, y, 120 + rnd() * 160, `rgba(${rnd() > .5 ? "209,254,23" : "200,80,220"},${.1 + rnd() * .14})`, "rgba(0,0,0,0)");
+      }
+      // swirl arcs
+      ctx.strokeStyle = "rgba(12,150,156,.5)"; ctx.lineWidth = 1.4;
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.arc(w / 2, h / 2, 40 + i * 40, rnd() * 6.28, rnd() * 6.28 + 4);
+        ctx.stroke();
+      }
+    }
+  };
+
+  function paintCanvas() {
+    const { w, h } = setCanvasSize();
+    const rnd = mulberry32(Date.now() & 0xffff);
+    PAINTERS[activeModel](w, h, rnd);
+    // vignette
+    const v = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .4, w / 2, h / 2, Math.max(w, h) * .75);
+    v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.5)");
+    ctx.fillStyle = v; ctx.fillRect(0, 0, w, h);
+  }
+
+  /* ---------- prompt enhancement ---------- */
+  const STYLE_HINTS = {
+    flux: "cinematic volumetric lighting, ultra-detailed, neon cyber palette, 8k",
+    realism: "photorealistic, natural skin texture, shallow depth of field, golden-hour realism",
+    "3d": "unreal engine 5 render, dramatic rim light, subsurface scattering, octane, hyper-detailed 3d",
+    anime: "masterpiece anime key visual, soft cel shading, detailed linework, vibrant pastel palette",
+    sdxl: "sdxl turbo, high contrast, intricate detail, dreamlike atmosphere, sharp focus"
+  };
+
+  function enhancePrompt(raw, modelId) {
+    return `${raw.trim().replace(/\.$/, "")}, ${STYLE_HINTS[modelId] ||  ""}, high resolution award-winning composition`;
+  }
+
+  const heroEnhanceBox = $("#heroEnhanceBox");
+  const heroEnhanceText = $("#heroEnhanceText");
+  $("#heroEnhance").addEventListener("click", () => {
+    const raw = $("#heroPrompt").value.trim();
+    if (!raw) { toast("Type a prompt first to enhance it.", "info"); return; }
+    const enhanced = enhancePrompt(raw, activeModel);
+    heroEnhanceText.innerHTML = `<span class="dim">enhanced ▸ </span>${esc(enhanced)}<span class="caret"></span>`;
+    heroEnhanceBox.classList.add("show");
+    logTerminal(`enhance("${raw.slice(0, 40)}…") → ok`, "dim");
+  });
+
+  function triggerStudio(rawPrompt) {
+    // sync hero prompt into studio
+    if (rawPrompt) $("#studioPrompt").value = rawPrompt;
+    $("#studioGenerate").click();
+    // scroll to studio
+    $("#studio").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  $("#heroGenerate").addEventListener("click", () => {
+    const raw = $("#heroPrompt").value.trim();
+    if (!raw) { toast("Describe something first — then we diffuse it.", "info"); return; }
+    triggerStudio(raw);
+  });
+
+  /* ---------- generation pipeline ---------- */
+  let generating = false;
+  const galleryReel = $("#galleryReel");
+  const galleryCount = $("#galleryCount");
+  let galleryItems = [];
+  const downloadBtn = $("#downloadBtn");
+  const genStatus = $("#genStatus");
+
+  const studioGenerate = $("#studioGenerate");
+  studioGenerate.addEventListener("click", function() {
+    if (generating) return;
+    const raw = $("#studioPrompt").value.trim();
+    if (!raw) { toast("Enter a prompt before diffusing.", "info"); return; }
+
+    const enhanced = enhancePrompt(raw, activeModel);
+    generating = true;
+    studioGenerate.disabled = true;
+    genStatus.style.display = "flex";
+    ghost.style.display = "none";
+    genCanvas.style.opacity = ".25";
+    downloadBtn.disabled = true; downloadBtn.style.opacity = ".45"; downloadBtn.style.pointerEvents = "none";
+
+    // telemetry playback
+    logTerminal("── diffusion begin ──");
+    logTerminal(`model=${activeModel} aspect=${activeAspect}`, "dim");
+    logTerminal(`prompt: ${raw.slice(0, 48)}${raw.length > 48 ? "…" : ""}`, "dim");
+    let ticks = 0;
+    const typeTimer = setInterval(() => {
+      ticks++;
+      logTerminal(`parallel diffusion · step ${String(ticks).padStart(2, "0")}/12 · ${Math.round(ticks / 12 * 100)}%`);
+      progressBar.style.width = (ticks / 12 * 100) + "%";
+      if (ticks >= 12) {
+        clearInterval(typeTimer);
+        // paint
+        setTimeout(() => {
+          paintCanvas();
+          genCanvas.style.opacity = "1";
+          progressBar.style.width = "100%";
+          logTerminal("── render complete ✓ signature: mercury-3.parallel", "dim");
+          setTimeout(() => { progressBar.style.width = "0%"; }, 900);
+
+          const dataUrl = genCanvas.toDataURL("image/png");
+          // add to gallery
+          galleryItems.unshift({ dataUrl, model: activeModel, aspect: activeAspect, prompt: raw });
+          if (galleryItems.length > 8) galleryItems.pop();
+          renderGallery();
+
+          downloadBtn.disabled = false; downloadBtn.style.opacity = ""; downloadBtn.style.pointerEvents = "";
+          genStatus.style.display = "none";
+          studioGenerate.disabled = false;
+          generating = false;
+          toast("Render complete — download your PNG!", "success");
+        }, 350);
+      }
+    }, 130);
+  });
+
+  // download
+  downloadBtn.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = `ai-toolkit-pro_${activeModel}_${Date.now()}.png`;
+    link.href = genCanvas.toDataURL("image/png");
+    link.click();
+    toast("PNG saving to your device…", "success");
+  });
+
+  // gallery
+  function renderGallery() {
+    galleryCount.textContent = `${galleryItems.length} render${galleryItems.length === 1 ? "" : "s"}`;
+    if (!galleryItems.length) {
+      galleryReel.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);font-family:var(--font-mono);font-size:12px;text-align:center;padding:30px 0">No renders yet — generate your first piece above. ⚡</div>`;
+      return;
+    }
+    galleryReel.innerHTML = "";
+    galleryItems.forEach((g, i) => {
+      const t = document.createElement("div");
+      t.className = "gallery-thumb";
+      t.innerHTML = `<img src="${g.dataUrl}" alt="AI render ${i + 1} — ${esc(g.prompt)}"><span class="g-meta">${esc(g.model)} · ${esc(g.aspect)}</span>`;
+      t.addEventListener("click", () => {
+        // load into main viewport
+        const img = new Image();
+        img.onload = () => {
+          ctx.clearRect(0, 0, genCanvas.width, genCanvas.height);
+          const dpr = Math.min(window.devicePixelRatio ||  1, 2);
+          genCanvas.width = img.width; genCanvas.height = img.height;
+          genCanvas.style.width = "100%"; genCanvas.style.height = "100%";
+          ctx.drawImage(img, 0, 0);
+          ghost.style.display = "none";
+          logTerminal(`loaded session render #${i + 1}`, "dim");
+          toast("Loaded render into main viewport.", "success");
+        };
+        img.src = g.dataUrl;
+      });
+      galleryReel.appendChild(t);
+    });
+  }
+
+  /* ============================================================
+     RIGS — dataset, filters, search, currency, tilt
+     ============================================================ */
+  const RIG_CATS = ["All", "Cameras", "Audio", "Desks", "Displays", "AI GPUs"];
+  const RIGS = [
+    // Cameras
+    { n:"Sony Alpha 7 IV", c:"cameras", b:"Sony", inr:214900, usd:2498, s:["33MP Full-Frame","4K 60p","AI Real-Time AF"], img:"sony-a7-iv", tag:"Best Seller" },
+    { n:"Canon EOS R6 Mark II", c:"cameras", b:"Canon", inr:209995, usd:2499, s:["24.2MP","4K 60p","IBIS"], img:"canon-r6-m2" },
+    { n:"Nikon Z8", c:"cameras", b:"Nikon", inr:322999, usd:3999, s:["45.7MP","8K 60p","EXPEED 7"], img:"nikon-z8", tag:"Flagship" },
+    { n:"Sony FX3", c:"cameras", b:"Sony", inr:242990, usd:3898, s:["Full-Frame Cinema","4K 120p","S-Cinetone"], img:"sony-fx3", tag:"Cinema" },
+    { n:"Blackmagic Pocket 6K", c:"cameras", b:"Blackmagic", inr:146500, usd:1795, s:["6K Super35","13 Stops","EF Mount"], img:"bmpcc-6k" },
+    { n:"Fujifilm X-T5", c:"cameras", b:"Fujifilm", inr:165999, usd:1699, s:["40MP APS-C","Film Sims","IBIS"], img:"fuji-xt5" },
+    { n:"Panasonic Lumix GH6", c:"cameras", b:"Panasonic", inr:149990, usd:1799, s:["MFT","5.7K ProRes","Phase AF"], img:"lumix-gh6" },
+    { n:"Canon Cinema EOS C70", c:"cameras", b:"Canon", inr:439650, usd:5499, s:["RF Mount","Dual Gain Output","4K 120p"], img:"canon-c70", tag:"Pro" },
+    { n:"DJI Osmo Pocket 3", c:"cameras", b:"DJI", inr:56999, usd:669, s:["1\" Sensor","3-Axis Gimbal","4K 120p"], img:"dji-pocket3" },
+    { n:"GoPro HERO12 Black", c:"cameras", b:"GoPro", inr:39999, usd:399, s:["5.3K 60p","HyperSmooth 6.0","Waterproof 10m"], img:"gopro-hero12" },
+    { n:"Sony ZV-E1", c:"cameras", b:"Sony", inr:184990, usd:2198, s:["Full-Frame Vlog","AI Framing","4K 120p"], img:"sony-zve1" },
+    { n:"RED Komodo 6K", c:"cameras", b:"RED", inr:625950, usd:7995, s:["6K Global Shutter","DSMC2","RF Mount"], img:"red-komodo", tag:"Cinema" },
+    { n:"Leica Q3", c:"cameras", b:"Leica", inr:699000, usd:5995, s:["60MP Full-Frame","Summilux 28mm","8K Video"], img:"leica-q3", tag:"Luxury" },
+    { n:"Insta360 X4", c:"cameras", b:"Insta360", inr:48999, usd:499, s:["8K 360°","5.7K Active HDR","FlowState"], img:"insta-x4" },
+    // Audio
+    { n:"Shure SM7B", c:"audio", b:"Shure", inr:41999, usd:399, s:["Dynamic Broadcast","Cardioid","Built-in Air Suspension"], img:"shure-sm7b", tag:"Podcast Hero" },
+    { n:"Rode NT1 Signature", c:"audio", b:"Rode", inr:19990, usd:159, s:["Studio Condenser","Cardioid","S3 Shockmount"], img:"rode-nt1" },
+    { n:"Neumann TLM 102", c:"audio", b:"Neumann", inr:98500, usd:799, s:["Studio Condenser","Cardioid","20Hz–20kHz"], img:"neumann-tlm102", tag:"Pro" },
+    { n:"Electro-Voice RE20", c:"audio", b:"EV", inr:55950, usd:449, s:["Broadcast Dynamic","Variable-D","High SPL"], img:"ev-re20" },
+    { n:"Focusrite Scarlett 2i2", c:"audio", b:"Focusrite", inr:22999, usd:199, s:["2-in/2-out","24-bit/192kHz","Air Mode"], img:"scarlett-2i2" },
+    { n:"UA Volt 276", c:"audio", b:"Universal Audio", inr:31999, usd:299, s:["2-in/2-out","Vintage Compressor","MIDI"], img:"ua-volt276" },
+    { n:"Beyerdynamic DT 770 PRO", c:"audio", b:"Beyerdynamic", inr:15999, usd:159, s:["Closed-Back Cans","80Ω","Bass-Reflex"], img:"dt770-pro" },
+    { n:"Audio-Technica ATH-M50x", c:"audio", b:"Audio-Technica", inr:14999, usd:149, s:["Studio Monitoring","45mm Drivers","Detachable Cable"], img:"m50x" },
+    { n:"Sony WH-1000XM5", c:"audio", b:"Sony", inr:29990, usd:348, s:["ANC Headphones","30h Battery","Hi-Res LDAC"], img:"wh1000xm5" },
+    { n:"Shure MV7+", c:"audio", b:"Shure", inr:28990, usd:279, s:["USB + XLR","Touch Mute","DSP Denoiser"], img:"mv7-plus" },
+    { n:"Elgato Wave:3", c:"audio", b:"Elgato", inr:18999, usd:149, s:["USB Condenser","Clipguard","Wave Link"], img:"wave3" },
+    { n:"Zoom H6 Essential", c:"audio", b:"Zoom", inr:32490, usd:349, s:["6-Track Recorder","Interchangeable Caps","32-bit Float"], img:"zoom-h6" },
+    { n:"Cloudlifter CL-1", c:"audio", b:"Cloud", inr:10990, usd:149, s:["Inline Gain Boost","+25dB","Phantom Safe"], img:"cloudlifter" },
+    { n:"Rode Wireless PRO", c:"audio", b:"Rode", inr:34950, usd:399, s:["2-Person Wireless","32-bit Float","Timecode"], img:"rode-wireless-pro" },
+    // Desks
+    { n:"Autonomous SmartDesk Core", c:"desks", b:"Autonomous", inr:54999, usd:449, s:["Sit-Stand","4 Memory Presets","Industrial Frame"], img:"smartdesk-core" },
+    { n:"Uplift V2 Standing Desk", c:"desks", b:"Uplift", inr:81700, usd:749, s:["Dual Motor","15-Year Warranty","Bamboo Top"], img:"uplift-v2" },
+    { n:"Flexispot E7", c:"desks", b:"Flexispot", inr:44999, usd:499, s:["Dual Motor","DR. Desks","120kg Load"], img:"flexispot-e7" },
+    { n:"Secretlab Magnus Pro", c:"desks", b:"Secretlab", inr:89999, usd:899, s:["Magnetic Ecosystem","Cable Tray","Steel Frame"], img:"secretlab-magnus", tag:"Gaming" },
+    { n:"Vari Electric Standing Desk", c:"desks", b:"Vari", inr:67500, usd:695, s:["Electric Lift","Sit-Stand","Eco Materials"], img:"vari-desk" },
+    { n:"IKEA BEKANT", c:"desks", b:"IKEA", inr:49999, usd:549, s:["Height Adjustable","Powder-Coated Steel","10-Year"], img:"ikea-bekant" },
+    { n:"Jarvis Bamboo Top", c:"desks", b:"Fully", inr:59900, usd:629, s:["Bamboo Surface","Dual Motor","Whisper Quiet"], img:"jarvis-bamboo" },
+    { n:"MOFT Invisible Stand", c:"desks", b:"MOFT", inr:9999, usd:99, s:["Laptop Stand","4 Angles","Adhesive Mount"], img:"moft-stand" },
+    { n:"Roost Laptop Stand", c:"desks", b:"Roost", inr:12499, usd:119, s:["Ergonomic","Lightweight 95g","Portable"], img:"roost-stand" },
+    { n:"NextDesk Terra", c:"desks", b:"NextDesk", inr:71300, usd:799, s:["Bamboo","Smart Height Memory","Stabilized"], img:"nextdesk-terra" },
+    { n:"Branch Standing Desk", c:"desks", b:"Branch", inr:48300, usd:479, s:["Compact Frame","Cable Tray","5-Year"], img:"branch-desk" },
+    { n:"Effydesk Complete", c:"desks", b:"Effy", inr:42999, usd:429, s:["Bed + Desk","All-in-One","Adjustable"], img:"effydesk" },
+    { n:"Massload Pro 2", c:"desks", b:"Massload", inr:37999, usd:399, s:["Electric Sit-Stand","Memory","Stable Steel"], img:"massload-pro2" },
+    // Displays
+    { n:"Apple Studio Display", c:"displays", b:"Apple", inr:139900, usd:1599, s:["5K Retina","600 nits","6-Speaker"], img:"apple-studio-display", tag:"Retina" },
+    { n:"LG UltraFine 5K", c:"displays", b:"LG", inr:112000, usd:1299, s:["5K 27\"","Thunderbolt 3","P3 99%"], img:"lg-ultrafine" },
+    { n:"Samsung Odyssey G9 OLED", c:"displays", b:"Samsung", inr:229000, usd:2099, s:["49\" 240Hz OLED","DQHD","0.03ms"], img:"odyssey-g9", tag:"Ultrawide" },
+    { n:"Dell UltraSharp U2723QE", c:"displays", b:"Dell", inr:48500, usd:579, s:["27\" 4K","IPS Black","USB-C 90W"], img:"dell-u2723qe" },
+    { n:"ASUS ProArt PA32UCX", c:"displays", b:"ASUS", inr:289000, usd:2999, s:["32\" 4K HDR","Mini-LED 1152","Calman Verified"], img:"proart-pa32ucx", tag:"Pro" },
+    { n:"BenQ PD3220U", c:"displays", b:"BenQ", inr:84300, usd:1199, s:["31.5\" 4K","85% BT.2020","KVM"], img:"benq-pd3220u" },
+    { n:"LG C3 42\" OLED", c:"displays", b:"LG", inr:94000, usd:1099, s:["42\" OLED","4K 120Hz","a9 Gen6"], img:"lg-c3-oled" },
+    { n:"Alienware AW3423DW", c:"displays", b:"Alienware", inr:149000, usd:1299, s:["34\" QD-OLED","175Hz","G-Sync Ultimate"], img:"alienware-aw3423dw" },
+    { n:"Philips 27E2F7901", c:"displays", b:"Philips", inr:44900, usd:529, s:["27\" 4K","IPS Black","USB-C 96W"], img:"philips-27e2" },
+    { n:"ViewSonic VP2786-4K", c:"displays", b:"ViewSonic", inr:52500, usd:649, s:["27\" 4K","Pantone Validated","Hardware Cal"], img:"viewsonic-vp2786" },
+    { n:"Eizo ColorEdge CG2700X", c:"displays", b:"Eizo", inr:262000, usd:3199, s:["27\" 4K","Built-in Calibrator","DCI-P3 98%"], img:"eizo-cg2700x", tag:"Color Critical" },
+    { n:"Acer Predator X34 GS", c:"displays", b:"Acer", inr:74500, usd:899, s:["34\" QHD 180Hz","0.5ms","HDR400"], img:"predator-x34" },
+    { n:"HP Z27k G3", c:"displays", b:"HP", inr:41200, usd:469, s:["27\" 4K","USB-C 100W","IPS"], img:"hp-z27k" },
+    { n:"Lenovo ThinkVision P32u-10", c:"displays", b:"Lenovo", inr:65900, usd:799, s:["31.5\" 4K","USB-C 90W","98% DCI-P3"], img:"thinkvision-p32u" },
+    // GPUs / compute
+    { n:"NVIDIA GeForce RTX 5090", c:"gpus", b:"NVIDIA", inr:215000, usd:1999, s:["32GB GDDR7","Blackwell","21,760 CUDA"], img:"rtx5090", tag:"Flagship" },
+    { n:"NVIDIA GeForce RTX 4090", c:"gpus", b:"NVIDIA", inr:170000, usd:1599, s:["24GB GDDR6X","Ada Lovelace","16,384 CUDA"], img:"rtx4090", tag:"Best Seller" },
+    { n:"NVIDIA GeForce RTX 4080 SUPER", c:"gpus", b:"NVIDIA", inr:104000, usd:999, s:["16GB GDDR6X","Ada","10,240 CUDA"], img:"rtx4080s" },
+    { n:"NVIDIA GeForce RTX 5070 Ti", c:"gpus", b:"NVIDIA", inr:88000, usd:749, s:["16GB GDDR7","Blackwell","8,960 CUDA"], img:"rtx5070ti" },
+    { n:"NVIDIA GeForce RTX 5080", c:"gpus", b:"NVIDIA", inr:113000, usd:1149, s:["16GB GDDR7","Blackwell","10,752 CUDA"], img:"rtx5080" },
+    { n:"AMD Radeon RX 7900 XTX", c:"gpus", b:"AMD", inr:101500, usd:919, s:["24GB GDDR6","RDNA 3","24GB Infinity"], img:"rx7900xtx" },
+    { n:"Apple Mac Studio M2 Ultra", c:"gpus", b:"Apple", inr:355000, usd:3999, s:["192GB Unified","76-Core GPU","8K Render"], img:"mac-studio-m2", tag:"Silicon" },
+    { n:"MacBook Pro M3 Max", c:"gpus", b:"Apple", inr:389900, usd:3499, s:["40-Core GPU","128GB","3.5 TB/s"], img:"mbp-m3max" },
+    { n:"NVIDIA GeForce RTX 3090 Ti", c:"gpus", b:"NVIDIA", inr:145000, usd:1499, s:["24GB GDDR6X","Ampere","10,752 CUDA"], img:"rtx3090ti" },
+    { n:"NVIDIA RTX A6000", c:"gpus", b:"NVIDIA", inr:385000, usd:4699, s:["48GB GDDR6","Ampere Pro","10,752 CUDA"], img:"a6000", tag:"Pro Compute" },
+    { n:"Lambda TensorBook", c:"gpus", b:"Lambda", inr:420000, usd:5999, s:["RTX 4060","96GB RAM","Linux AI Laptop"], img:"lambda-tensorbook", tag:"ML" },
+    { n:"GIGABYTE RTX 4060 Ti", c:"gpus", b:"GIGABYTE", inr:42500, usd:399, s:["16GB GDDR6","Ada","4,352 CUDA"], img:"rtx4060ti" },
+    { n:"Framework 16 (Ryzen AI 9)", c:"gpus", b:"Framework", inr:245900, usd:2099, s:["Ryzen AI 9 HX 370","dGPU Modular","120Hz"], img:"framework-16" },
+    { n:"Intel Arc B580", c:"gpus", b:"Intel", inr:27600, usd:259, s:["12GB GDDR6","Battlemage","20 Xe Cores"], img:"arc-b580" },
+    { n:"MINISFORUM AI PC", c:"gpus", b:"MINISFORUM", inr:88400, usd:899, s:["AI NPU 48 TOPS","RTX 4070 dGPU","Mini Tower"], img:"minisforum-ai" },
+    { n:"NVIDIA Jetson AGX Orin", c:"gpus", b:"NVIDIA", inr:143500, usd:1999, s:["64GB","275 TOPS","Edge AI"], img:"jetson-orin", tag:"Edge AI" },
+    { n:"Oculink eGPU Dock", c:"gpus", b:"ADT-Link", inr:26750, usd:299, s:["Oculink 4.0","ATX PSU","PCIe x4"], img:"oculink-dock" }
+  ];
+
+  let rigFilter = "All";
+  let rigCurrency = "inr";
+  let rigSearch = "";
+
+  // render filter chips
+  const rigFilterWrap = $("#rigFilters");
+  RIG_CATS.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (c === "All" ? " active" : "");
+    b.textContent = c;
+    b.addEventListener("click", () => {
+      rigFilter = c;
+      $$(".filter-chip", rigFilterWrap).forEach(x => x.classList.toggle("active", x.textContent === c));
+      renderRigs();
+    });
+    rigFilterWrap.appendChild(b);
+  });
+
+  // currency toggle
+  $("#currencyToggle").addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    rigCurrency = btn.dataset.cur;
+    $$("#currencyToggle button").forEach(x => x.classList.toggle("active", x === btn));
+    renderRigs();
+  });
+
+  // search
+  let searchTimer;
+  $("#rigSearch").addEventListener("input", (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { rigSearch = e.target.value.trim().toLowerCase(); renderRigs(); }, 160);
+  });
+
+  function rigImage(rig) {
+    return `https://picsum.photos/seed/${rig.img}/600/450`;
+  }
+
+  function priceLabel(rig, old = false) {
+    const v = rigCurrency === "inr" ? rig.inr : rig.usd;
+    const cur = rigCurrency === "inr" ? "₹" : "$";
+    const val = cur === "₹" ? fmtIN(v) : v.toLocaleString("en-US");
+    return `${cur}${val}`;
+  }
+
+  function renderRigs() {
+    const grid = $("#rigsGrid");
+    const q = rigSearch;
+    const list = RIGS.filter(r => {
+      const catOk = rigFilter === "All" ||  r.c === rigFilter.toLowerCase().replace(" ", "");
+      const searchOk = !q ||  (r.n + " " + r.b + " " + r.s.join(" ")).toLowerCase().includes(q);
+      return catOk && searchOk;
+    });
+
+    if (!list.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--muted);font-family:var(--font-mono);font-size:13px">no rigs match your filters — try another query</div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(r => `
+      <article class="rig-card glass" data-name="${esc(r.n)}" data-cat="${r.c}">
+        <div class="rig-media">
+          <img src="${rigImage(r)}" alt="${esc(r.n)} product shot" loading="lazy" width="600" height="450">
+          ${r.tag ? `<span class="rig-tag">${esc(r.tag)}</span>` : ""}
+          <span class="rig-prime">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 10V8a6 6 0 0 1 12 0v2"/><path d="M5 11a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/></svg>
+            Prime 1-Day
+          </span>
+        </div>
+        <div class="rig-body">
+          <div class="rig-brand">${esc(r.b)}</div>
+          <h3 class="rig-name">${esc(r.n)}</h3>
+          <div class="rig-specs">${r.s.map(s => `<span class="spec">${esc(s)}</span>`).join("")}</div>
+          <div class="rig-price-row">
+            <span>
+              ${r.tag === "Best Seller" ? `<span class="rig-price-old">${priceLabel(r, true)}</span>` : ""}
+              <span class="rig-price">${priceLabel(r)}</span>
+            </span>
+            <span class="chip">${RIG_CATS.find(c => c.toLowerCase().replace(" ","") === r.c) ||  "Gear"}</span>
+          </div>
+          <a class="rig-cta" target="_blank" rel="noopener sponsored" href="https://www.amazon.in/s?k=${encodeURIComponent(r.b + " " + r.n)}&tag=aitoolkitpro-21">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 10V8a6 6 0 0 1 12 0v2"/><path d="M5 11a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/></svg>
+            Buy on Amazon · 1-Day Prime
+          </a>
+        </div>
+      </article>
+    `).join("");
+
+    attachTilt(grid);
+  }
+
+  // 3D hover tilt
+  function attachTilt(scope) {
+    $$(".rig-card", scope).forEach(card => {
+      card.addEventListener("mousemove", (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(900px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) translateY(-4px)`;
+      });
+      card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+    });
+  }
+
+  renderRigs();
+
+  /* ============================================================
+     VAULT — dataset, coupons, cards
+     ============================================================ */
+  const VAULT_CATS = ["All", "Lead Gen", "Content", "SEO", "Automation"];
+  const VAULT = [
+    { n:"AI Lead Bot Pro", c:"Lead Gen", d:"Multi-channel lead qualification bot with CRM webhooks, enrichment, and a no-code rules engine. Ships with full source.", price:2999, code:"LPB-7X4", ico:"target" },
+    { n:"ImageGen Turbo API", c:"Content", d:"Self-hosted image generation micro-service (Flux + SDXL adapters), queue, cache, and rate limiting included.", price:3499, code:"IGT-2K9", ico:"image" },
+    { n:"SEO Engine 9000", c:"SEO", d:"Automatic keyword clustering, content brief generator, internal-link builder, and sitemap worker.", price:2499, code:"SE9-0A3", ico:"trending" },
+    { n:"Cold Mail Cascade", c:"Lead Gen", d:"AI-personalized cold outreach pipeline with warmup, spam-score guard, and reply triage.", price:1499, code:"CMC-8B1", ico:"send" },
+    { n:"Viral Clip Cutter", c:"Content", d:"Detects hooks, captions, and cuts long-form into vertical clips — auto-exported for Shorts/Reels.", price:2199, code:"VCC-4E8", ico:"scissors" },
+    { n:"Rank Tracker Lite", c:"SEO", d:"Daily rank tracking with SERP screenshots, alerts, and a lightweight dashboard (fully self-hosted).", price:999, code:"RTL-1C6", ico:"bar-chart" },
+    { n:"Webinar Auto-Scribe", c:"Automation", d:"Transcribes, summarizes, and action-items your webinars into CRM tasks and follow-up emails.", price:1999, code:"WAS-6F5", ico:"file-text" },
+    { n:"ChatFlow Support Pilot", c:"Automation", d:"RAG-powered support assistant with tone control, human handoff, and a knowledge-base crawler.", price:2799, code:"CFP-9D2", ico:"message" }
+  ];
+
+  let vaultFilter = "All";
+  let activeCoupon = null;
+  const COUPONS = { LAUNCH20: { type: "pct", v: 0.2 }, FLAT50: { type: "flat", v: 50 }, AGENCY100: { type: "flat", v: 100 } };
+
+  // vault filter chips
+  const vaultFilterWrap = $("#vaultFilters");
+  VAULT_CATS.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (c === "All" ? " active" : "");
+    b.textContent = c;
+    b.addEventListener("click", () => {
+      vaultFilter = c;
+      $$(".filter-chip", vaultFilterWrap).forEach(x => x.classList.toggle("active", x.textContent === c));
+      renderVault();
+    });
+    vaultFilterWrap.appendChild(b);
+  });
+
+  // coupon buttons
+  $$(".coupon").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.coupon;
+      if (activeCoupon === code) {
+        activeCoupon = null;
+        btn.classList.remove("active");
+        toast("Coupon removed — prices restored.", "info");
+      } else {
+        activeCoupon = code;
+        $$(".coupon").forEach(x => x.classList.toggle("active", x.dataset.coupon === code));
+        // copy to clipboard with fallback
+        const copy = () => navigator.clipboard.writeText(code).then(() => {
+          toast(`Coupon ${code} copied — discount applied!`, "success");
+        }, () => { toast(`Coupon ${code} — copy manually.`, "info"); });
+        if (navigator.clipboard && navigator.clipboard.writeText) copy();
+        else { const t = document.createElement("textarea"); t.value = code; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); toast(`Coupon ${code} copied — discount applied!`, "success"); }
+      }
+      renderVault();
+    });
+  });
+
+  function discountedPrice(price) {
+    if (!activeCoupon) return price;
+    const c = COUPONS[activeCoupon];
+    if (c.type === "pct") return Math.round(price * (1 - c.v));
+    return Math.max(0, price - c.v);
+  }
+
+  function renderVault() {
+    const grid = $("#vaultGrid");
+    const list = VAULT.filter(v => vaultFilter === "All" ||  v.c === vaultFilter);
+    grid.innerHTML = list.map(v => {
+      const final = discountedPrice(v.price);
+      const hasDiscount = final !== v.price;
+      return `
+      <article class="vault-card-item reveal in">
+        <div class="vault-cat">${esc(v.c)}</div>
+        <h3 class="vault-name">${esc(v.n)}</h3>
+        <p class="vault-desc">${esc(v.d)}</p>
+        <div class="vault-meta">
+          <span class="vault-price">${hasDiscount ? `<span class="old">₹${fmtIN(v.price)}</span>` : ""}₹${fmtIN(final)}</span>
+          <span class="vault-code">${esc(v.code)}</span>
+        </div>
+        ${hasDiscount ? `<div style="margin-bottom:12px;font-family:var(--font-mono);font-size:11px;color:var(--lime);letter-spacing:.08em">✓ COUPON ${esc(activeCoupon)} APPLIED</div>` : ""}
+        <button class="vault-btn" data-code="${esc(v.code)}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/></svg>
+          Get Source · ₹${fmtIN(final)}
+        </button>
+      </article>`;
+    }).join("");
+
+    $$(".vault-btn", grid).forEach(btn => {
+      btn.addEventListener("click", () => {
+        const code = btn.dataset.code;
+        const copy = () => navigator.clipboard.writeText(code).then(() => toast(`Source code ${code} added to your vault.`, "success"));
+        if (navigator.clipboard && navigator.clipboard.writeText) copy();
+        else { const t = document.createElement("textarea"); t.value = code; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); toast(`Source code ${code} added to your vault.`, "success"); }
+      });
+    });
+  }
+
+  renderVault();
+
+  /* ============================================================
+     STATS — animated counters
+     ============================================================ */
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const dur = 1800;
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString("en-IN");
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+      statObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  $$(".stat-count").forEach(el => statObserver.observe(el));
+
+  /* ============================================================
+     TESTIMONIALS — carousel
+     ============================================================ */
+  const REVIEWS = [
+    { q:"The AI Studio alone is worth it — I generated my entire launch trailer art in a weekend. The 3D Unreal engine preset is insane.", n:"Ravi Sharma", r:"Founder · PixelForge Studio", img:"ravi-sharma", v:"Verified Rigs Buyer" },
+    { q:"Bought the Sony FX3 through the rig store. Real hardware, real price, 1-day Prime delivery, and the commission genuinely funds the free studio.", n:"Meera Iyer", r:"Content Operator · 2.1M subs", img:"meera-iyer", v:"Verified Rigs Buyer" },
+    { q:"Claude Opus 5 + Mercury 3 telemetry in one shell was the final push I needed to leave my SaaS job. The vault code is clean — no encrypted lock-in.", n:"Arjun Mehta", r:"Indie Hacker", img:"arjun-mehta", v:"Vault Owner" },
+    { q:"Applied LAUNCH20 to the Lead Bot source and had a working demo by dinner. The coupon-to-clipboard flow is scarily smooth.", n:"Sakshi Kapoor", r:"Growth Marketer", img:"sakshi-kapoor", v:"Vault Owner" },
+    { q:"Zero platform fees, actually zero. I run my whole creator business on this stack — rigs, renders, and revenue scripts all in one place.", n:"Dev Patel", r:"Video Editor · Freelance", img:"dev-patel", v:"Studio Power User" },
+    { q:"As someone in Guwahati, the Prime delivery and honest pricing matter. This is the first 'AI toolkit' that treats creators like owners, not users.", n:"Ananya Das", r:"eCommerce Owner", img:"ananya-das", v:"Verified Rigs Buyer" }
+  ];
+
+  const tTrack = $("#tTrack");
+  const tDots = $("#tDots");
+  let tIndex = 0, tTimer;
+
+  function renderSlides() {
+    tTrack.innerHTML = REVIEWS.map(r => `
+      <div class="t-slide">
+        <div class="t-card">
+          <div>
+            <div class="stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>').join("")}</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.08em">CREATOR REVIEW · #${String(REVIEWS.indexOf(r) + 1).padStart(2,"0")}</div>
+            <span class="verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> ${esc(r.v)}</span>
+          </div>
+          <div>
+            <p class="t-quote"><span class="mark">“</span>${esc(r.q)}<span class="mark">”</span></p>
+            <div class="t-person">
+              <img class="t-avatar" src="https://i.pravatar.cc/96?u=${esc(r.img)}" alt="${esc(r.n)}" loading="lazy" width="48" height="48">
+              <div>
+                <div class="t-name">${esc(r.n)}</div>
+                <div class="t-role">${esc(r.r)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`).join("");
+
+    tDots.innerHTML = REVIEWS.map((_, i) => `<button class="t-dot${i === 0 ? " active" : ""}" data-i="${i}" aria-label="Review ${i + 1}"></button>`).join("");
+    $$(".t-dot").forEach(d => d.addEventListener("click", () => goSlide(+d.dataset.i)));
+  }
+
+  function goSlide(i) {
+    tIndex = (i + REVIEWS.length) % REVIEWS.length;
+    tTrack.style.transform = `translateX(-${tIndex * 100}%)`;
+    $$(".t-dot").forEach((d, di) => d.classList.toggle("active", di === tIndex));
+  }
+
+  function autoPlay() { clearInterval(tTimer); tTimer = setInterval(() => goSlide(tIndex + 1), 5200); }
+
+  $("#tPrev").addEventListener("click", () => { goSlide(tIndex - 1); autoPlay(); });
+  $("#tNext").addEventListener("click", () => { goSlide(tIndex + 1); autoPlay(); });
+  const tView = $(".t-viewport");
+  tView.addEventListener("mouseenter", () => clearInterval(tTimer));
+  tView.addEventListener("mouseleave", autoPlay);
+
+  renderSlides(); autoPlay();
+
+  /* ============================================================
+     REVEAL ON SCROLL
+     ============================================================ */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  $$(".reveal").forEach(el => revealObs.observe(el));
+
+  /* ============================================================
+     NEWSLETTER
+     ============================================================ */
+  $("#newsletterForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = $("#newsletterEmail").value.trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!ok) { toast("Please enter a valid email address.", "info"); return; }
+    $("#newsletterEmail").value = "";
+    toast("You're in — welcome to The Dispatch. 📬", "success");
+  });
+
+  /* ============================================================
+     INIT: canvas sizing + aspect meta on shell
+     ============================================================ */
+  canvasShell.dataset.aspect = activeAspect;
+  window.addEventListener("resize", () => {
+    if (genCanvas.width) setCanvasSize();
+  });
+
+})();
+</script>
+</body>
+</html>

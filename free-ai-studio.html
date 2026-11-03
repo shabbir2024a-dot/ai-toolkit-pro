@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense Account Verification & Auto Ads -->
+  <meta name="google-adsense-account" content="ca-pub-4611140073860733">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4611140073860733" crossorigin="anonymous"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Free AI Image & Video Studio | Unlimited Flux & Cinematic Generations | AI Toolkit Pro</title>
+  <meta name="description" content="Generate unlimited high-resolution AI images and cinematic visuals completely free. Powered by open-weights Flux.1 and SDXL models. Zero subscription, zero API key required.">
+  <meta name="keywords" content="Free AI Image Generator, Free Flux.1, Free Text to Video, OpenHiggsfield, AI Toolkit Pro, AI Studio, Pollinations AI">
+  <link rel="canonical" href="https://ai-toolkit-pro-eta.vercel.app/free-ai-studio">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free AI Image & Visual Studio | AI Toolkit Pro">
+  <meta property="og:description" content="Generate unlimited photorealistic Flux AI images and visual assets with zero API key required. 100% free creator studio.">
+  <meta property="og:url" content="https://ai-toolkit-pro-eta.vercel.app/free-ai-studio">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #031716;
+      --card-bg: #042426;
+      --card-hover: #07383a;
+      --border-teal: rgba(12, 150, 156, 0.25);
+      --border-glow: rgba(12, 150, 156, 0.55);
+      --accent-cyan: #0C969C;
+      --accent-emerald: #0A7075;
+      --accent-lime: #d1fe17;
+      --amazon-orange: #FF9900;
+      --amazon-yellow: #ffd814;
+      --text-main: #FFFFFF;
+      --text-muted: #94A3B8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(1200px 600px at 50% -50px, rgba(12, 150, 156, 0.2), transparent 75%),
+        radial-gradient(800px 500px at 90% 400px, rgba(10, 112, 117, 0.15), transparent 70%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: var(--accent-cyan); text-decoration: none; transition: all 0.2s; }
+    a:hover { color: #FFFFFF; }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Top Global Header */
+    header.site-header {
+      background: rgba(3, 23, 22, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-teal);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+
+    .brand-badge {
+      background: rgba(12, 150, 156, 0.18);
+      color: var(--accent-cyan);
+      font-size: 0.72rem;
+      font-family: 'IBM Plex Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(12, 150, 156, 0.4);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+    /* Studio Main Layout */
+    .studio-hero {
+      padding: 36px 0 20px;
+      text-align: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(209, 254, 23, 0.1);
+      border: 1px solid rgba(209, 254, 23, 0.3);
+      color: var(--accent-lime);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      box-shadow: 0 0 10px var(--accent-lime);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .studio-hero h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .studio-hero h1 span {
+      background: linear-gradient(135deg, var(--accent-cyan), #57C5B6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .studio-hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Two Column Studio Grid */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+      margin-top: 28px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 1024px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Left: Composer & Canvas */
+    .composer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-teal);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+    }
+
+    .composer-input-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .prompt-textarea {
+      width: 100%;
+      background: #021211;
+      border: 1px solid rgba(12, 150, 156, 0.35);
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: #FFFFFF;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .prompt-textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(12, 150, 156, 0.25);
+    }
+
+    .prompt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .chip-btn {
+      background: rgba(12, 150, 156, 0.08);
+      border: 1px solid rgba(12, 150, 156, 0.25);
+      color: #94A3B8;
+      font-size: 0.78rem;
+      padding: 5px 11px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip-btn:hover {
+      background: rgba(12, 150, 156, 0.22);
+      color: #fff;
+      border-color: var(--accent-cyan);
+    }
+
+    /* Controls Row */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(12, 150, 156, 0.18);
+      padding-top: 18px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-size: 0.8rem;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .control-select {
+      background: #021211;
+      border: 1px solid rgba(12, 150, 156, 0.35);
+      color: #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .ratio-buttons {
+      display: flex;
+      gap: 6px;
+      background: #021211;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid rgba(12, 150, 156, 0.25);
+    }
+
+    .ratio-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-family: 'IBM Plex Mono', monospace;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ratio-btn.active {
+      background: var(--accent-cyan);
+      color: #031716;
+      font-weight: 700;
+    }
+
+    .btn-generate {
+      background: linear-gradient(135deg, #0C969C, #0A7075);
+      color: #FFFFFF;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(12, 150, 156, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-generate:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(12, 150, 156, 0.5);
+      filter: brightness(1.1);
+    }
+
+    .btn-generate:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-enhance {
+      background: linear-gradient(135deg, rgba(12, 150, 156, 0.2), rgba(209, 254, 23, 0.15));
+      color: var(--accent-lime);
+      border: 1px solid rgba(209, 254, 23, 0.4);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-enhance:hover {
+      background: linear-gradient(135deg, rgba(12, 150, 156, 0.35), rgba(209, 254, 23, 0.25));
+      border-color: var(--accent-lime);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(209, 254, 23, 0.2);
+    }
+
+    .btn-enhance:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .enhance-badge {
+      font-size: 0.68rem;
+      background: rgba(209, 254, 23, 0.2);
+      color: var(--accent-lime);
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Output Canvas Display */
+    .canvas-card {
+      margin-top: 24px;
+      background: #021211;
+      border: 1px solid var(--border-teal);
+      border-radius: 18px;
+      min-height: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .canvas-placeholder {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .canvas-placeholder-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 600px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      object-fit: contain;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 18, 17, 0.88);
+      backdrop-filter: blur(8px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 10;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(12, 150, 156, 0.2);
+      border-top-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Canvas Action Bar */
+    .canvas-actions {
+      display: none;
+      gap: 12px;
+      margin-top: 16px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      background: rgba(12, 150, 156, 0.12);
+      border: 1px solid rgba(12, 150, 156, 0.35);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: rgba(12, 150, 156, 0.25);
+      border-color: var(--accent-cyan);
+    }
+
+    .btn-action-primary {
+      background: var(--amazon-orange);
+      border-color: var(--amazon-orange);
+      color: #031716;
+      font-weight: 700;
+    }
+
+    .btn-action-primary:hover {
+      background: #ffa826;
+    }
+
+    /* Right Sidebar: Hardware & Features */
+    .studio-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar-widget {
+      background: var(--card-bg);
+      border: 1px solid var(--border-teal);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .widget-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gear-quick-card {
+      background: #021211;
+      border: 1px solid rgba(12, 150, 156, 0.2);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .gear-quick-card:hover {
+      transform: translateX(4px);
+      border-color: var(--amazon-orange);
+    }
+
+    .gear-quick-card img {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .gear-quick-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .gear-quick-price {
+      font-size: 0.8rem;
+      color: var(--amazon-orange);
+      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Gallery Rail */
+    .history-section {
+      margin-top: 40px;
+      border-top: 1px solid var(--border-teal);
+      padding-top: 36px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #021211;
+      border: 1px solid var(--border-teal);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(12, 150, 156, 0.3);
+      border-color: var(--accent-cyan);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border-teal);
+      background: rgba(3, 23, 22, 0.9);
+      padding: 32px 0;
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Google AdSense Responsive Unit Styles */
+    .ad-slot-wrapper {
+      margin: 2rem auto;
+      text-align: center;
+      max-width: 100%;
+      clear: both;
+    }
+    .ad-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .ad-banner-box {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-teal);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 100px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    ins.adsbygoogle {
+      display: block !important;
+      width: 100% !important;
+      min-width: 280px;
+      min-height: 90px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-logo">
+        <span>⚡ AI TOOLKIT <span style="color: var(--accent-cyan);">PRO</span></span>
+        <span class="brand-badge">STUDIO SUITE</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/creator-gear" style="color: #FF9900; font-weight: 700;">🛒 70+ Creator Store</a>
+        <a href="/creator-video">🎬 Video Tour</a>
+        <a href="/free-claude-opus-5">Claude Opus 5</a>
+        <a href="/source-codes">Micro-SaaS Vault</a>
+        <a href="/free-ai-studio" class="active" style="color: var(--accent-lime); font-weight: 700;">✨ Free AI Studio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Studio Hero -->
+    <section class="studio-hero">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>OPEN-SOURCE AI ENGINE • ZERO API KEY REQUIRED • 100% FREE</span>
+      </div>
+      <h1>
+        Next-Gen <span>AI Studio & Image Engine</span>
+      </h1>
+      <p>
+        Generate high-resolution visual assets, thumbnails, and cinematic concepts without subscriptions. Powered by open-weights Flux.1 and SDXL architectures.
+      </p>
+    </section>
+
+    <!-- Studio Grid -->
+    <div class="studio-grid">
+      <!-- Left Column: Composer & Output -->
+      <section class="composer-column">
+        <div class="composer-card">
+          <div class="composer-input-wrapper">
+            <textarea 
+              id="promptInput" 
+              class="prompt-textarea" 
+              placeholder="Describe your visual concept... e.g., 'A cinematic 35mm film still of a futuristic neon audio studio with a Shure SM7B dynamic microphone and dual 4K monitors, volumetric haze, atmospheric color grading'"
+            ></textarea>
+          </div>
+
+          <!-- Mercury-3 Prompt Enhancer Bar -->
+          <div class="composer-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 16px 0; flex-wrap: wrap; gap: 10px;">
+            <button type="button" id="btnEnhance" class="btn-enhance" onclick="handleEnhancePrompt()">
+              <span>⚡ Enhance Prompt with Mercury 3</span>
+              <span class="enhance-badge">Diffusion dLLM</span>
+            </button>
+            <div id="enhanceNotice" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+              <span style="color: #10B981;">●</span> Inception Labs 100M Token Parallel Diffusion Active
+            </div>
+          </div>
+
+          <!-- Prompt Inspiration Chips -->
+          <div class="prompt-chips">
+            <span class="chip-btn" onclick="applyPreset('A cinematic 35mm film still of a futuristic neon audio studio with Shure SM7B microphone, moody teal and orange lighting, soft film grain, photorealistic 8k')">🎙️ Neon Studio Rig</span>
+            <span class="chip-btn" onclick="applyPreset('Extreme macro 8k product photography of a matte black cinema camera body with gold accents on an obsidian reflective surface, studio softbox illumination')">📷 Pro Cinema Camera</span>
+            <span class="chip-btn" onclick="applyPreset('Dramatic high-pressure scientific simulation of volcanic basalt lava interacting with ocean water, explosive steam plume, 3D hyper-detailed')">🌋 3D Lava Simulation</span>
+            <span class="chip-btn" onclick="applyPreset('Minimalist Scandinavian wooden standing desk setup with dual curved 4K monitors, mechanical keyboard with brass accents, warm evening sunlight')">🪑 Minimalist Desk Setup</span>
+            <span class="chip-btn" onclick="applyPreset('Cyberpunk developer workstation with holographic data visualizations, vertical ultrawide display, ambient aqua illumination')">💻 Cyberpunk Rig</span>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="controls-bar">
+            <!-- Model Picker -->
+            <div class="control-group">
+              <span class="control-label">Model:</span>
+              <select id="modelSelect" class="control-select">
+                <option value="flux">Flux.1 Schnell (Ultra High-Detail)</option>
+                <option value="flux-realism">Flux Realism (Photorealistic)</option>
+                <option value="flux-3d">Flux 3D (Unreal Engine 5)</option>
+                <option value="flux-anime">Flux Anime (Illustration)</option>
+                <option value="turbo">SDXL Turbo (Instant Draft)</option>
+              </select>
+            </div>
+
+            <!-- Aspect Ratio -->
+            <div class="control-group">
+              <span class="control-label">Aspect:</span>
+              <div class="ratio-buttons">
+                <button type="button" class="ratio-btn active" data-ratio="16:9" onclick="setRatio('16:9', this)">16:9 (YouTube)</button>
+                <button type="button" class="ratio-btn" data-ratio="9:16" onclick="setRatio('9:16', this)">9:16 (Shorts)</button>
+                <button type="button" class="ratio-btn" data-ratio="1:1" onclick="setRatio('1:1', this)">1:1 (Square)</button>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <button type="button" id="btnGenerate" class="btn-generate" onclick="handleGenerate()">
+              <span>✨ Generate Free</span>
+            </button>
+          </div>
+
+          <!-- Canvas Output Viewport -->
+          <div class="canvas-card" id="canvasCard">
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+              <div class="spinner"></div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; color: #fff;">
+                Synthesizing with Flux.1 Engine...
+              </div>
+              <div style="color: var(--text-muted); font-size: 0.8rem;">
+                Estimated: 2–5 seconds
+              </div>
+            </div>
+
+            <!-- Empty Placeholder -->
+            <div class="canvas-placeholder" id="placeholder">
+              <div class="canvas-placeholder-icon">🎨</div>
+              <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 6px;">Ready for Synthesis</h3>
+              <p style="font-size: 0.9rem;">Type any prompt or click a preset above, then press <strong>Generate Free</strong>.</p>
+            </div>
+
+            <!-- Rendered Output Image -->
+            <img id="outputImg" class="preview-image" alt="AI Generated Artwork">
+
+            <!-- Action Bar -->
+            <div class="canvas-actions" id="canvasActions">
+              <button type="button" class="btn-action btn-action-primary" onclick="downloadCurrent()">
+                <span>⬇ Download High-Res</span>
+              </button>
+              <button type="button" class="btn-action" onclick="copyCurrentPrompt()">
+                <span>📋 Copy Prompt</span>
+              </button>
+              <button type="button" class="btn-action" onclick="handleGenerate(true)">
+                <span>🔄 Variation (New Seed)</span>
+              </button>
+              <a href="/creator-gear?tag=aitoolkitpro-21" class="btn-action" style="color: #FF9900; border-color: rgba(255,153,0,0.4);">
+                <span>🛒 View Rig Specs ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Rail -->
+        <section class="history-section">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.2rem; color: #fff;">
+              🕒 Recent Session Generations
+            </h3>
+            <button type="button" onclick="clearHistory()" style="background: none; border: none; color: #64748b; font-size: 0.8rem; cursor: pointer;">
+              Clear All
+            </button>
+          </div>
+          <div class="gallery-grid" id="historyGrid">
+            <!-- Dynamically populated from localStorage -->
+          </div>
+        </section>
+      </section>
+
+      <!-- Right Column: Hardware Synergy & Tools -->
+      <aside class="studio-sidebar">
+        <!-- Widget 1: Creator Hardware Engine -->
+        <div class="sidebar-widget">
+          <h3 class="widget-title">
+            <span>⚡ Recommended AI Rig Gear</span>
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
+            Battle-tested hardware for running local ComfyUI, training LoRAs, and 4K video rendering.
+          </p>
+
+          <a href="https://www.amazon.in/dp/B0C39R8P52?tag=aitoolkitpro-21" target="_blank" rel="noopener" class="gear-quick-card">
+            <img src="/assets/products/zotac-rtx-5060-4070-graphics-card.jpg" alt="RTX 4070">
+            <div>
+              <div class="gear-quick-title">Zotac RTX 4070 12GB</div>
+              <div class="gear-quick-price">₹54,990 • Prime 1-Day</div>
+            </div>
+          </a>
+
+          <a href="https://www.amazon.in/dp/B0002E4Z8M?tag=aitoolkitpro-21" target="_blank" rel="noopener" class="gear-quick-card">
+            <img src="/assets/products/shure-sm7b-dynamic-vocal-mic.jpg" alt="Shure SM7B">
+            <div>
+              <div class="gear-quick-title">Shure SM7B Dynamic Mic</div>
+              <div class="gear-quick-price">₹36,990 • #1 Studio Standard</div>
+            </div>
+          </a>
+
+          <a href="https://www.amazon.in/dp/B0DJSLJYCF?tag=aitoolkitpro-21" target="_blank" rel="noopener" class="gear-quick-card">
+            <img src="/assets/products/sony-alpha-zve10-with-zoom-lens.jpg" alt="Sony ZV-E10">
+            <div>
+              <div class="gear-quick-title">Sony Alpha ZV-E10 4K</div>
+              <div class="gear-quick-price">₹61,490 • 4K Vlogging</div>
+            </div>
+          </a>
+
+          <div style="text-align: center; margin-top: 14px;">
+            <a href="/creator-gear?tag=aitoolkitpro-21" style="font-size: 0.85rem; font-weight: 700; color: #FF9900;">
+              Explore All 70+ Verified Rigs ➔
+            </a>
+          </div>
+        </div>
+
+        <!-- Widget 2: Micro-SaaS Vault -->
+        <div class="sidebar-widget" style="background: linear-gradient(180deg, #042426, #031716);">
+          <h3 class="widget-title">
+            <span>📦 Micro-SaaS Vault</span>
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+            Want to build and self-host your own AI generation portal? Grab complete source codes from our verified vault.
+          </p>
+          <a href="/source-codes" style="display: inline-block; width: 100%; text-align: center; background: rgba(12,150,156,0.15); border: 1px solid var(--border-teal); color: #fff; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.85rem;">
+            Access 33 Micro-SaaS Codes ➔
+          </a>
+        </div>
+
+        <!-- Widget 3: OpenHiggsfield 38-Model Studio -->
+        <div class="sidebar-widget" style="background: linear-gradient(180deg, rgba(12, 150, 156, 0.15), rgba(3, 23, 22, 0.95)); border: 1px solid rgba(209, 254, 23, 0.35);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--accent-lime); background: rgba(209,254,23,0.15); padding: 2px 8px; border-radius: 4px;">38 MODELS</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: #10B981;">● FREE GATEWAY</span>
+          </div>
+          <h3 class="widget-title" style="margin-bottom: 8px;">
+            <span style="color: #FFFFFF;">🎬 OpenHiggsfield Studio</span>
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px;">
+            Unified image & video composer for Kling 3, Wan, Soul 2, Seedance & Flux. Zero studio fees.
+          </p>
+          <a href="https://open-higgsfield-free.vercel.app" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; text-align: center; background: rgba(209, 254, 23, 0.12); border: 1px solid rgba(209, 254, 23, 0.45); color: var(--accent-lime); padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.85rem;">
+            Launch 38-Model Studio ↗
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- AdSense Display Unit -->
+    <div class="ad-slot-wrapper">
+      <div class="ad-label">ADVERTISEMENT</div>
+      <div class="ad-banner-box">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; min-height:90px;"
+             data-ad-client="ca-pub-4611140073860733"
+             data-ad-slot="9842103576"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p style="margin-bottom: 8px;">
+        © 2026 AI Toolkit Pro • Official Creator Studio & Open AI Hub
+      </p>
+      <p style="font-size: 0.78rem; color: #64748b;">
+        Amazon Associates Partner ID: <strong style="color: #FF9900;">aitoolkitpro-21</strong>. We earn qualifying commissions from purchases made via product links.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Generation Logic -->
+  <script>
+    let currentRatio = "16:9";
+    let lastGeneratedUrl = "";
+    let lastPrompt = "";
+
+    function setRatio(ratio, el) {
+      currentRatio = ratio;
+      document.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    async function handleEnhancePrompt() {
+      const input = document.getElementById('promptInput');
+      const promptText = input.value.trim();
+      const btn = document.getElementById('btnEnhance');
+      const notice = document.getElementById('enhanceNotice');
+
+      if (!promptText) {
+        alert("Please enter a short concept or idea to enhance! (e.g. 'cyberpunk creator setup' or 'cinema camera')");
+        input.focus();
+        return;
+      }
+
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '<span>⚡ Synthesizing with Mercury 3...</span>';
+      btn.disabled = true;
+      notice.innerHTML = '<span style="color: var(--accent-lime);">⚡ Mercury-3 diffusion reasoning in progress...</span>';
+
+      try {
+        let enhancedResult = null;
+        
+        // 1. Try serverless function /api/enhance
+        try {
+          const res = await fetch('/api/enhance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: promptText })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.enhanced) enhancedResult = data.enhanced;
+          }
+        } catch (e) {
+          console.warn("Direct serverless call failed, falling back to Inception Labs API gateway", e);
+        }
+
+        // 2. Direct client fallback with Inception Labs API key
+        if (!enhancedResult) {
+          const directRes = await fetch('https://api.inceptionlabs.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer sk_db07465bac7bf323d147b157f2572a18771318016466778be066ee5dd9898a1a',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'mercury-3',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are an elite cinematic visual director. Expand the user prompt into one vivid, hyper-detailed, photorealistic sentence specifying cinematic lighting, 8k textures, depth of field, and atmosphere. Return ONLY the expanded prompt without introductory text, commentary, or quotes.'
+                },
+                {
+                  role: 'user',
+                  content: promptText
+                }
+              ],
+              max_tokens: 512,
+              temperature: 0.7
+            })
+          });
+
+          if (directRes.ok) {
+            const directData = await directRes.json();
+            enhancedResult = directData.choices?.[0]?.message?.content?.trim();
+          }
+        }
+
+        if (enhancedResult) {
+          input.value = enhancedResult;
+          notice.innerHTML = '<span style="color: #10B981;">✓ Successfully enhanced by Mercury 3 parallel diffusion!</span>';
+          setTimeout(() => {
+            notice.innerHTML = '<span style="color: #10B981;">●</span> Inception Labs 100M Token Parallel Diffusion Active';
+          }, 4500);
+        } else {
+          notice.innerHTML = '<span style="color: #f59e0b;">Prompt ready. Proceed to generate!</span>';
+        }
+      } catch (err) {
+        console.error("Enhance error:", err);
+        notice.innerHTML = '<span style="color: #ef4444;">Could not connect to enhancer. Proceeding with original prompt.</span>';
+      } finally {
+        btn.innerHTML = origHtml;
+        btn.disabled = false;
+      }
+    }
+
+    function applyPreset(text) {
+      document.getElementById('promptInput').value = text;
+      document.getElementById('promptInput').focus();
+    }
+
+    function getDimensions(ratio) {
+      switch(ratio) {
+        case "9:16": return { w: 576, h: 1024 };
+        case "1:1":  return { w: 1024, h: 1024 };
+        default:     return { w: 1024, h: 576 }; // 16:9
+      }
+    }
+
+    async function handleGenerate(isVariation = false) {
+      const prompt = document.getElementById('promptInput').value.trim();
+      if (!prompt) {
+        alert("Please describe your visual concept first!");
+        document.getElementById('promptInput').focus();
+        return;
+      }
+
+      const model = document.getElementById('modelSelect').value;
+      const { w, h } = getDimensions(currentRatio);
+      const seed = Math.floor(Math.random() * 1000000);
+
+      const overlay = document.getElementById('loadingOverlay');
+      const placeholder = document.getElementById('placeholder');
+      const outputImg = document.getElementById('outputImg');
+      const actions = document.getElementById('canvasActions');
+      const btn = document.getElementById('btnGenerate');
+
+      overlay.style.display = 'flex';
+      btn.disabled = true;
+
+      // Construct Pollinations Flux endpoint with zero API key
+      const apiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&model=${model}&seed=${seed}&nologo=true`;
+
+      outputImg.onload = () => {
+        overlay.style.display = 'none';
+        btn.disabled = false;
+        placeholder.style.display = 'none';
+        outputImg.style.display = 'block';
+        actions.style.display = 'flex';
+        lastGeneratedUrl = apiUrl;
+        lastPrompt = prompt;
+        saveToHistory({ url: apiUrl, prompt, ratio: currentRatio, date: new Date().toLocaleTimeString() });
+      };
+
+      outputImg.onerror = () => {
+        overlay.style.display = 'none';
+        btn.disabled = false;
+        outputImg.style.display = 'block';
+        actions.style.display = 'flex';
+        placeholder.style.display = 'none';
+      };
+
+      outputImg.src = apiUrl;
+    }
+
+    async function downloadCurrent() {
+      if (!lastGeneratedUrl) return;
+      try {
+        const res = await fetch(lastGeneratedUrl);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `AI_Toolkit_Pro_${Date.now()}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (e) {
+        window.open(lastGeneratedUrl, '_blank');
+      }
+    }
+
+    function copyCurrentPrompt() {
+      if (!lastPrompt) return;
+      navigator.clipboard.writeText(lastPrompt).then(() => {
+        alert("Prompt copied to clipboard!");
+      });
+    }
+
+    function saveToHistory(item) {
+      let history = JSON.parse(localStorage.getItem('ai_toolkit_studio_history') || '[]');
+      history.unshift(item);
+      if (history.length > 12) history.pop();
+      localStorage.setItem('ai_toolkit_studio_history', JSON.stringify(history));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const grid = document.getElementById('historyGrid');
+      const history = JSON.parse(localStorage.getItem('ai_toolkit_studio_history') || '[]');
+      if (history.length === 0) {
+        grid.innerHTML = '<div style="color: #64748b; font-size: 0.85rem; grid-column: 1/-1;">No generations yet. Try creating your first artwork above!</div>';
+        return;
+      }
+
+      grid.innerHTML = history.map(item => `
+        <div class="gallery-item" onclick="loadFromHistory('${item.url.replace(/'/g, "\\'")}', '${item.prompt.replace(/'/g, "\\'")}')">
+          <img src="${item.url}" alt="${item.prompt}" loading="lazy">
+        </div>
+      `).join('');
+    }
+
+    function loadFromHistory(url, prompt) {
+      document.getElementById('promptInput').value = prompt;
+      const placeholder = document.getElementById('placeholder');
+      const outputImg = document.getElementById('outputImg');
+      const actions = document.getElementById('canvasActions');
+
+      placeholder.style.display = 'none';
+      outputImg.src = url;
+      outputImg.style.display = 'block';
+      actions.style.display = 'flex';
+      lastGeneratedUrl = url;
+      lastPrompt = prompt;
+
+      window.scrollTo({ top: document.getElementById('canvasCard').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    function clearHistory() {
+      localStorage.removeItem('ai_toolkit_studio_history');
+      renderHistory();
+    }
+
+    // Initialize history on load
+    window.addEventListener('DOMContentLoaded', renderHistory);
+  </script>
+</body>
+</html>

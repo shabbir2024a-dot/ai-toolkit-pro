@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-toolkit-pro-eta.vercel.app/sitemap.xml

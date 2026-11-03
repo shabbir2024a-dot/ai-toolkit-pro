@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense Account Verification & Auto Ads -->
+  <meta name="google-adsense-account" content="ca-pub-4611140073860733">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4611140073860733" crossorigin="anonymous"></script>
+
+  <meta charset="UTF-8">
+  <title>CodeCraft 50s Cinema Motion Graphic Studio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #020617;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "JetBrains Mono", monospace;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+    #canvas-container {
+      position: relative;
+      box-shadow: 0 25px 80px -15px rgba(0, 0, 0, 0.95), 0 0 60px rgba(223, 94, 18, 0.3);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    canvas {
+      display: block;
+      width: 480px;
+      height: 853px; /* 9:16 aspect ratio preview */
+    }
+    #controls {
+      margin-top: 16px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    button {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #df5e12, #c2410c);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(223, 94, 18, 0.45);
+    }
+    #status {
+      font-size: 14px;
+      color: #38bdf8;
+      font-family: monospace;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <canvas id="motionCanvas" width="1080" height="1920"></canvas>
+  </div>
+
+  <div id="controls">
+    <button id="btnPlayPause">⏯ Play / Pause</button>
+    <button id="btnAudio">🔊 Audio: ON</button>
+    <button id="btnReplay">🔄 Replay</button>
+    <a href="codecraft_motion_graphic_50s_hindi.mp4" download="codecraft_motion_graphic_50s_hindi.mp4" style="text-decoration: none;">
+      <button style="background: #0ea5e9;">⬇ Download MP4 (25MB)</button>
+    </a>
+    <a href="index.html#motion-showcase" style="text-decoration: none;">
+      <button style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">← Return to Toolkit</button>
+    </a>
+    <span id="status">Loading Screenshots...</span>
+  </div>
+  <audio id="hindiAudio" src="codecraft_hindi_master_50s.mp3" preload="auto"></audio>
+
+  <script>
+    const canvas = document.getElementById('motionCanvas');
+    const ctx = canvas.getContext('2d');
+    const statusText = document.getElementById('status');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnAudio = document.getElementById('btnAudio');
+    const btnReplay = document.getElementById('btnReplay');
+    const hindiAudio = document.getElementById('hindiAudio');
+
+    let isPlaying = true;
+    let audioEnabled = true;
+
+    btnPlayPause.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      btnPlayPause.textContent = isPlaying ? '⏸ Pause' : '▶ Play';
+      if (isPlaying) {
+        if (audioEnabled) hindiAudio.play().catch(() => {});
+        loop();
+      } else {
+        cancelAnimationFrame(animationId);
+        hindiAudio.pause();
+      }
+    });
+
+    btnAudio.addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      btnAudio.textContent = audioEnabled ? '🔊 Audio: ON' : '🔇 Audio: OFF';
+      if (!audioEnabled) {
+        hindiAudio.pause();
+      } else if (isPlaying) {
+        hindiAudio.currentTime = currentFrame / FPS;
+        hindiAudio.play().catch(() => {});
+      }
+    });
+
+    btnReplay.addEventListener('click', () => {
+      currentFrame = 0;
+      hindiAudio.currentTime = 0;
+      if (audioEnabled && isPlaying) {
+        hindiAudio.play().catch(() => {});
+      }
+      if (!isPlaying) {
+        isPlaying = true;
+        btnPlayPause.textContent = '⏸ Pause';
+        loop();
+      }
+    });
+
+    const WIDTH = 1080;
+    const HEIGHT = 1920;
+    const FPS = 30; // Cinema 30 FPS for buttery smooth 50s render
+    const DURATION = 50; // 50 Seconds
+    const TOTAL_FRAMES = FPS * DURATION; // 1,500 frames
+
+    let currentFrame = 0;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let animationId = null;
+
+    // Load Real Screenshots
+    const images = {};
+    const imgUrls = {
+      playground: 'assets/images/codecraft_playground_screen.png',
+      apiKeys: 'assets/images/codecraft_api_keys_live.png',
+      claudeStudio: 'assets/images/claude_studio_live_verified.png',
+      shortsLab: 'assets/images/claude_shorts_lab_live_verified.png',
+      sinkingCar: 'assets/images/sinking_car_short_live_verified.png'
+    };
+
+    let loadedCount = 0;
+    const totalImages = Object.keys(imgUrls).length;
+
+    Object.keys(imgUrls).forEach(key => {
+      images[key] = new Image();
+      images[key].src = imgUrls[key];
+      images[key].onload = () => {
+        loadedCount++;
+        statusText.textContent = `Screenshots: ${loadedCount}/${totalImages} Ready`;
+        if (loadedCount === totalImages) {
+          statusText.textContent = 'Engine Ready • 50s Motion Graphics';
+          if (!animationId) loop();
+        }
+      };
+      images[key].onerror = () => {
+        // Fallback placeholder image if not loaded
+        loadedCount++;
+        const dummyCanvas = document.createElement('canvas');
+        dummyCanvas.width = 1200;
+        dummyCanvas.height = 700;
+        const dCtx = dummyCanvas.getContext('2d');
+        dCtx.fillStyle = '#0f172a';
+        dCtx.fillRect(0, 0, 1200, 700);
+        dCtx.fillStyle = '#38bdf8';
+        dCtx.font = 'bold 40px sans-serif';
+        dCtx.fillText(`Screenshot: ${key}`, 100, 350);
+        images[key] = dummyCanvas;
+        if (loadedCount === totalImages) {
+          statusText.textContent = 'Engine Ready • 50s Motion Graphics';
+          if (!animationId) loop();
+        }
+      };
+    });
+
+    // Particle Matrix (120 animated stars/cyber nodes)
+    const particles = [];
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * WIDTH,
+        y: Math.random() * HEIGHT,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        radius: Math.random() * 3 + 1,
+        alpha: Math.random() * 0.7 + 0.3,
+        color: i % 3 === 0 ? '#df5e12' : (i % 3 === 1 ? '#06b6d4' : '#f59e0b')
+      });
+    }
+
+    // Code Matrix Stream Lines
+    const codeSnippets = [
+      'POST /v1/chat/completions HTTP/2',
+      'Authorization: Bearer cc_iFhJYhJpjWQGu...',
+      'model: "claude-opus-5"',
+      'temperature: 0.7, max_tokens: 4096',
+      'stream: true, reasoning: active',
+      'status: 200 OK • 120ms TTFT',
+      'tokens_remaining: 500,000'
+    ];
+
+    // Easing Utilities
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+    function easeInOutCubic(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+    function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+    // Helper: Draw Perspective 3D Screenshot Card
+    function drawScreenshotCard(img, x, y, w, h, angleX, angleY, scale, glowColor, badgeText) {
+      if (!img) return;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+
+      // Perspective transformation simulation
+      const skewX = angleY * 0.35;
+      const skewY = angleX * 0.2;
+      ctx.transform(1, skewY, skewX, 1, 0, 0);
+
+      // Outer Glow & Shadow
+      ctx.shadowColor = glowColor || 'rgba(223, 94, 18, 0.4)';
+      ctx.shadowBlur = 45;
+
+      // Card Background Glass Frame
+      ctx.fillStyle = '#0f172a';
+      ctx.strokeStyle = glowColor || '#df5e12';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(-w / 2 - 10, -h / 2 - 10, w + 20, h + 20, 24);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Screenshot Image Render
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 18);
+      ctx.clip();
+      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+
+      // Cyber Scanline Overlay
+      const scanY = (-h / 2) + ((currentFrame * 8) % h);
+      const scanGrad = ctx.createLinearGradient(0, scanY - 30, 0, scanY + 30);
+      scanGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+      scanGrad.addColorStop(0.5, 'rgba(6, 182, 212, 0.25)');
+      scanGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+      ctx.fillStyle = scanGrad;
+      ctx.fillRect(-w / 2, scanY - 30, w, 60);
+
+      ctx.restore();
+
+      // Top Floating Badge
+      if (badgeText) {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.strokeStyle = glowColor || '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(-w / 2 + 20, -h / 2 - 28, 380, 42, 14);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = 'bold 18px monospace';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.fillText(badgeText, -w / 2 + 40, -h / 2);
+      }
+
+      ctx.restore();
+    }
+
+    // MAIN 50-SECOND RENDER PIPELINE
+    function renderFrame(frame) {
+      const time = frame / FPS; // 0.0s to 50.0s
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+      // 1. Deep Space Cyber Background
+      const bgGrad = ctx.createRadialGradient(WIDTH / 2, HEIGHT / 2, 120, WIDTH / 2, HEIGHT / 2, 1250);
+      bgGrad.addColorStop(0, '#0f172a');
+      bgGrad.addColorStop(0.4, '#070b14');
+      bgGrad.addColorStop(1, '#020408');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+      // 2. Dynamic Isometric Perspective Grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+      ctx.lineWidth = 1.5;
+      const gridOffset = (frame * 1.5) % 80;
+      for (let x = 0; x < WIDTH; x += 80) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, HEIGHT);
+        ctx.stroke();
+      }
+      for (let y = gridOffset; y < HEIGHT; y += 80) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(WIDTH, y);
+        ctx.stroke();
+      }
+
+      // 3. Floating Particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = WIDTH;
+        if (p.x > WIDTH) p.x = 0;
+        if (p.y < 0) p.y = HEIGHT;
+        if (p.y > HEIGHT) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha * (0.6 + 0.4 * Math.sin(time * 3 + p.radius));
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1.0;
+
+      // 4. Reactive Audio Visualizer Bars (Persistent Across Video)
+      ctx.save();
+      const waveY = 1860;
+      const barCount = 44;
+      const barWidth = 14;
+      const spacing = 8;
+      const totalWaveWidth = barCount * (barWidth + spacing);
+      const startX = (WIDTH - totalWaveWidth) / 2;
+
+      for (let b = 0; b < barCount; b++) {
+        const barX = startX + b * (barWidth + spacing);
+        const distFromCenter = Math.abs(b - barCount / 2) / (barCount / 2);
+        const heightMultiplier = 1 - distFromCenter * 0.55;
+        const h = (Math.sin(time * 7 + b * 0.35) * 0.5 + 0.5) * 75 * heightMultiplier + 10;
+
+        const grad = ctx.createLinearGradient(0, waveY - h, 0, waveY + h);
+        grad.addColorStop(0, '#06b6d4');
+        grad.addColorStop(0.5, '#df5e12');
+        grad.addColorStop(1, '#f59e0b');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(barX, waveY - h, barWidth, h);
+      }
+      ctx.restore();
+
+      // ========================================================
+      // ACT 1: 0.0s – 10.0s (THE HOOK & BREAKTHROUGH REVEAL)
+      // ========================================================
+      if (time < 10.0) {
+        const p1 = Math.min(1, time / 1.0);
+        const scale1 = easeOutBack(p1);
+
+        // Rotating Cyber Hologram Core
+        ctx.save();
+        ctx.translate(WIDTH / 2, 600);
+        const pulse = 1 + 0.08 * Math.sin(time * 6);
+
+        ctx.rotate(time * 0.6);
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(0, 0, 240 * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.rotate(-time * 1.2);
+        ctx.strokeStyle = 'rgba(223, 94, 18, 0.7)';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([25, 15, 8, 15]);
+        ctx.beginPath();
+        ctx.arc(0, 0, 180 * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Central Core
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 35;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, 0, 36 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.restore();
+
+        // Kinetic Typography
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1080);
+        ctx.scale(scale1, scale1);
+        ctx.textAlign = 'center';
+
+        if (time < 5.0) {
+          // Hook 1: The Problem
+          ctx.font = 'bold 24px monospace';
+          ctx.fillStyle = '#f59e0b';
+          ctx.fillText('⚡ TIRED OF MANAGING 5 AI SUBSCRIPTIONS?', 0, 0);
+
+          ctx.font = '900 76px -apple-system, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = '#df5e12';
+          ctx.shadowBlur = 30;
+          ctx.fillText('ONE API FOR ALL', 0, 90);
+
+          ctx.font = '700 36px -apple-system, sans-serif';
+          ctx.fillStyle = '#38bdf8';
+          ctx.shadowBlur = 15;
+          ctx.fillText('Claude • Gemini • DeepSeek • GPT', 0, 160);
+        } else {
+          // Hook 2: The Solution
+          ctx.font = 'bold 22px monospace';
+          ctx.fillStyle = '#10b981';
+          ctx.fillText('🚀 PRODUCTION-READY AI GATEWAY', 0, 0);
+
+          ctx.font = '900 86px -apple-system, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = '#06b6d4';
+          ctx.shadowBlur = 35;
+          ctx.fillText('CODECRAFT', 0, 95);
+
+          ctx.font = '700 34px -apple-system, sans-serif';
+          ctx.fillStyle = '#f59e0b';
+          ctx.shadowBlur = 15;
+          ctx.fillText('Streaming • Tools • 1M Context', 0, 165);
+        }
+        ctx.restore();
+      }
+
+      // ========================================================
+      // ACT 2: 10.0s – 20.0s (INSIDE CODECRAFT PLAYGROUND - SS 1)
+      // ========================================================
+      else if (time >= 10.0 && time < 20.0) {
+        const sceneTime = time - 10.0;
+        const progress = Math.min(1, sceneTime / 0.8);
+        const cardScale = easeOutBack(progress) * 0.95;
+
+        // Floating Title
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 22px monospace';
+        ctx.fillStyle = '#df5e12';
+        ctx.fillText('ACT 2 // FRONTIER MODEL PLAYGROUND', WIDTH / 2, 220);
+
+        ctx.font = '900 58px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 25;
+        ctx.fillText('Explore 33 Flagship Models', WIDTH / 2, 290);
+        ctx.shadowBlur = 0;
+
+        // Floating 3D Tilted Screenshot 1: CodeCraft Playground
+        const tiltX = Math.sin(sceneTime * 1.5) * 0.08;
+        const tiltY = Math.cos(sceneTime * 1.5) * 0.08;
+        drawScreenshotCard(
+          images.playground,
+          WIDTH / 2,
+          740,
+          940,
+          560,
+          tiltX,
+          tiltY,
+          cardScale,
+          '#df5e12',
+          '🔴 LIVE PLAYGROUND • CLAUDE OPUS 5'
+        );
+
+        // Highlight Cards Cycling Below
+        const activeIdx = Math.floor(sceneTime * 1.2) % 3;
+        const highlights = [
+          { name: 'CLAUDE OPUS 5', spec: '1,000,000 Token Context • Advanced Reasoning', color: '#df5e12' },
+          { name: 'GEMINI 3.7 FLASH', spec: 'Sub-100ms Multimodal Low Latency Inferences', color: '#06b6d4' },
+          { name: 'DEEPSEEK V4 PRO', spec: 'Frontier Mathematical & Coding Synthesizer', color: '#10b981' }
+        ];
+
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1220);
+        highlights.forEach((h, idx) => {
+          const hy = idx * 110;
+          const isAct = idx === activeIdx;
+
+          ctx.fillStyle = isAct ? 'rgba(223, 94, 18, 0.16)' : 'rgba(15, 23, 42, 0.7)';
+          ctx.strokeStyle = isAct ? h.color : 'rgba(255, 255, 255, 0.1)';
+          ctx.lineWidth = isAct ? 2.5 : 1;
+          ctx.beginPath();
+          ctx.roundRect(-450, hy, 900, 92, 18);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.font = '800 30px -apple-system, sans-serif';
+          ctx.fillStyle = isAct ? h.color : '#ffffff';
+          ctx.textAlign = 'left';
+          ctx.fillText((isAct ? '⚡ ' : '   ') + h.name, -420, hy + 42);
+
+          ctx.font = '600 18px monospace';
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillText(h.spec, -420, hy + 72);
+        });
+        ctx.restore();
+      }
+
+      // ========================================================
+      // ACT 3: 20.0s – 30.0s (API KEYS & PYTHON CLIENT - SS 2)
+      // ========================================================
+      else if (time >= 20.0 && time < 30.0) {
+        const sceneTime = time - 20.0;
+        const progress = Math.min(1, sceneTime / 0.8);
+        const cardScale = easeOutBack(progress) * 0.95;
+
+        // Floating Title
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 22px monospace';
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillText('ACT 3 // INSTANT OPENAI COMPATIBILITY', WIDTH / 2, 220);
+
+        ctx.font = '900 58px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 25;
+        ctx.fillText('One Key. Zero Vendor Lock-in.', WIDTH / 2, 290);
+        ctx.shadowBlur = 0;
+
+        // Floating 3D Tilted Screenshot 2: Real API Keys Page
+        const tiltX = Math.sin(sceneTime * 1.5) * 0.07;
+        const tiltY = -Math.cos(sceneTime * 1.5) * 0.07;
+        drawScreenshotCard(
+          images.apiKeys,
+          WIDTH / 2,
+          720,
+          940,
+          540,
+          tiltX,
+          tiltY,
+          cardScale,
+          '#06b6d4',
+          '🔑 PRODUCTION KEY: AI TOOLKIT PRO'
+        );
+
+        // Terminal Code Block
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1150);
+
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = 'rgba(6, 182, 212, 0.35)';
+        ctx.shadowBlur = 30;
+        ctx.beginPath();
+        ctx.roundRect(-450, 0, 900, 360, 20);
+        ctx.fill();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Terminal Header dots
+        ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(-420, 30, 7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(-400, 30, 7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(-380, 30, 7, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = 'bold 16px monospace';
+        ctx.fillStyle = '#94a3b8';
+        ctx.textAlign = 'right';
+        ctx.fillText('python3 client_test.py', 420, 35);
+
+        // Terminal Lines
+        ctx.textAlign = 'left';
+        ctx.font = '600 20px monospace';
+        const lines = [
+          { text: 'from openai import OpenAI', color: '#f59e0b' },
+          { text: 'client = OpenAI(', color: '#ffffff' },
+          { text: '    base_url="https://codecraftapi.com/v1",', color: '#38bdf8' },
+          { text: '    api_key="cc_iFhJYhJpjWQGuWfk2J0h..."', color: '#10b981' },
+          { text: ')', color: '#ffffff' },
+          { text: 'response = client.chat.completions.create(', color: '#ffffff' },
+          { text: '    model="claude-opus-5", messages=[...])', color: '#df5e12' },
+          { text: '✓ 200 OK • 1,240 tokens streamed in 118ms', color: '#10b981' }
+        ];
+
+        lines.forEach((l, idx) => {
+          ctx.fillStyle = l.color;
+          ctx.fillText(l.text, -420, 80 + idx * 34);
+        });
+
+        ctx.restore();
+      }
+
+      // ========================================================
+      // ACT 4: 30.0s – 40.0s (REAL WEBSITES INTEGRATION - SS 3 & 4)
+      // ========================================================
+      else if (time >= 30.0 && time < 40.0) {
+        const sceneTime = time - 30.0;
+        const isSecondHalf = sceneTime >= 5.0;
+
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 22px monospace';
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('ACT 4 // POWERING LIVE WEB APPLICATIONS', WIDTH / 2, 220);
+
+        ctx.font = '900 56px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#10b981';
+        ctx.shadowBlur = 25;
+        ctx.fillText(isSecondHalf ? 'Viral Shorts Physics Lab' : 'AI Toolkit Pro Architecture', WIDTH / 2, 290);
+        ctx.shadowBlur = 0;
+
+        const activeImg = isSecondHalf ? images.shortsLab : images.claudeStudio;
+        const activeBadge = isSecondHalf ? '🎬 SHORTS OUTPUT STUDIO • 98/100 HOOK' : '🧠 AI TOOLKIT PRO • CLAUDE COPILOT';
+        const activeColor = isSecondHalf ? '#df5e12' : '#10b981';
+
+        const tiltX = Math.sin(sceneTime * 1.8) * 0.08;
+        const tiltY = Math.cos(sceneTime * 1.8) * 0.08;
+        drawScreenshotCard(
+          activeImg,
+          WIDTH / 2,
+          740,
+          940,
+          560,
+          tiltX,
+          tiltY,
+          0.95,
+          activeColor,
+          activeBadge
+        );
+
+        // Feature Callouts
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1200);
+
+        const callouts = isSecondHalf ? [
+          '⚡ Instant 3-Second Viral Hook Formulas',
+          '🌊 3D Forensic Simulation Physics Prompts',
+          '📈 94%+ Retention Rate Retention Beats'
+        ] : [
+          '📐 Turnkey AV & Smart Villa BOQ Generators',
+          '🤖 Autonomous Python Scraping & LLM Agents',
+          '📊 MEP / ELV Clash Detection Operations Workflows'
+        ];
+
+        callouts.forEach((c, idx) => {
+          const cy = idx * 95;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+          ctx.strokeStyle = activeColor;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.roundRect(-420, cy, 840, 78, 16);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.font = '700 24px -apple-system, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(c, 0, cy + 48);
+        });
+
+        ctx.restore();
+      }
+
+      // ========================================================
+      // ACT 5: 40.0s – 50.0s (THE GRAND FINALE & VIRAL CTA)
+      // ========================================================
+      else {
+        const sceneTime = time - 40.0;
+        const progress = Math.min(1, sceneTime / 0.8);
+        const scale5 = easeOutBack(progress);
+
+        // Rotating Climax Hologram Ring
+        ctx.save();
+        ctx.translate(WIDTH / 2, 540);
+        const warpPulse = 1 + 0.15 * Math.sin(sceneTime * 8);
+
+        ctx.rotate(sceneTime * 2);
+        ctx.strokeStyle = '#df5e12';
+        ctx.lineWidth = 6;
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 45;
+        ctx.beginPath();
+        ctx.arc(0, 0, 220 * warpPulse, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.rotate(-sceneTime * 3);
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for (let s = 0; s < 6; s++) {
+          const angle = (s * Math.PI) / 3;
+          const hx = Math.cos(angle) * 140 * warpPulse;
+          const hy = Math.sin(angle) * 140 * warpPulse;
+          if (s === 0) ctx.moveTo(hx, hy);
+          else ctx.lineTo(hx, hy);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.restore();
+
+        // Main Outro Kinetic Typography
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1020);
+        ctx.scale(scale5, scale5);
+        ctx.textAlign = 'center';
+
+        ctx.font = 'bold 24px monospace';
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('✨ START BUILDING WITH NEXT-GEN AI', 0, 0);
+
+        ctx.font = '900 84px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 40;
+        ctx.fillText('GET STARTED FREE', 0, 95);
+        ctx.shadowBlur = 0;
+
+        ctx.font = '700 34px -apple-system, sans-serif';
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText('500,000 Tokens • No Card Required', 0, 160);
+
+        // Big Glowing CTA Button
+        ctx.fillStyle = 'linear-gradient(135deg, #df5e12, #c2410c)';
+        ctx.fillStyle = '#df5e12';
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 35;
+        ctx.beginPath();
+        ctx.roundRect(-340, 220, 680, 96, 28);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.font = '900 36px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('LAUNCH CODECRAFT API ➤', 0, 282);
+
+        // Outro URL & Credit
+        ctx.font = 'bold 24px monospace';
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillText('codecraftapi.com • ai-toolkit-pro-eta.vercel.app', 0, 380);
+
+        ctx.font = '600 20px -apple-system, sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('Engineered & Directed by Shabbir Ahmed (Guwahati, Assam)', 0, 430);
+
+        ctx.restore();
+      }
+
+      // ========================================================
+      // TOP HUD TELEMETRY OVERLAY (PERSISTENT ACROSS ENTIRE 50s)
+      // ========================================================
+      ctx.save();
+      ctx.font = '700 18px monospace';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.textAlign = 'left';
+      ctx.fillText('🔴 REC [30 FPS • 4K ULTRA MASTER]', 60, 80);
+
+      ctx.textAlign = 'right';
+      const timeRemaining = (DURATION - time).toFixed(1);
+      ctx.fillText(`CODECRAFT OS // T-${timeRemaining}s`, WIDTH - 60, 80);
+
+      // Top Progress Timeline Bar
+      ctx.fillStyle = '#df5e12';
+      ctx.fillRect(0, 0, (frame / TOTAL_FRAMES) * WIDTH, 8);
+      ctx.restore();
+    }
+
+    // Animation Loop
+    function loop() {
+      if (!isPlaying) return;
+      renderFrame(currentFrame);
+      if (audioEnabled && !hindiAudio.paused && Math.abs(hindiAudio.currentTime - (currentFrame / FPS)) > 0.4) {
+        hindiAudio.currentTime = currentFrame / FPS;
+      }
+      currentFrame = (currentFrame + 1) % TOTAL_FRAMES;
+      if (currentFrame === 0 && audioEnabled) {
+        hindiAudio.currentTime = 0;
+        hindiAudio.play().catch(() => {});
+      }
+      animationId = requestAnimationFrame(loop);
+    }
+
+    // Recording Engine for Full 50-Second Master Video
+    window.startRecording = function() {
+      return new Promise((resolve) => {
+        recordedChunks = [];
+        currentFrame = 0;
+        const stream = canvas.captureStream(FPS);
+
+        const options = {
+          mimeType: 'video/webm;codecs=vp9',
+          videoBitsPerSecond: 9000000 // 9 Mbps high bitrate broadcast quality
+        };
+
+        mediaRecorder = new MediaRecorder(stream, options);
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          statusText.textContent = `Completed 50s Master! Size: ${(blob.size / 1024 / 1024).toFixed(2)} MB`;
+          resolve(blob);
+        };
+
+        statusText.textContent = 'Recording 50s Motion Graphic Master at 30 FPS...';
+        mediaRecorder.start();
+
+        // Stop precisely after 50 seconds + 0.5s padding
+        setTimeout(() => {
+          mediaRecorder.stop();
+        }, DURATION * 1000 + 500);
+      });
+    };
+
+    btnRecord.addEventListener('click', async () => {
+      btnRecord.disabled = true;
+      const blob = await window.startRecording();
+      btnRecord.disabled = false;
+
+      // Download
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'codecraft_motion_graphic_50s_master.webm';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  </script>
+</body>
+</html>

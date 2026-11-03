@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodeCraft Motion Graphic Studio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #030712;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "JetBrains Mono", monospace;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+    #canvas-container {
+      position: relative;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(223, 94, 18, 0.25);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    canvas {
+      display: block;
+      width: 540px;
+      height: 960px;
+    }
+    #controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #df5e12, #c2410c);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(223, 94, 18, 0.4);
+    }
+    #status {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <canvas id="motionCanvas" width="1080" height="1920"></canvas>
+  </div>
+
+  <div id="controls">
+    <button id="btnRecord">🎬 Record 15s Motion Graphic Video</button>
+    <button id="btnReplay">🔄 Replay</button>
+    <span id="status">Status: Ready</span>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('motionCanvas');
+    const ctx = canvas.getContext('2d');
+    const statusText = document.getElementById('status');
+    const btnRecord = document.getElementById('btnRecord');
+    const btnReplay = document.getElementById('btnReplay');
+
+    const WIDTH = 1080;
+    const HEIGHT = 1920;
+    const FPS = 60;
+    const DURATION = 15; // 15 seconds
+    const TOTAL_FRAMES = FPS * DURATION;
+
+    let currentFrame = 0;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let animationId = null;
+
+    // Particles system
+    const particles = [];
+    for (let i = 0; i < 90; i++) {
+      particles.push({
+        x: Math.random() * WIDTH,
+        y: Math.random() * HEIGHT,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        radius: Math.random() * 3 + 1,
+        alpha: Math.random() * 0.7 + 0.3,
+        color: i % 3 === 0 ? '#df5e12' : (i % 3 === 1 ? '#06b6d4' : '#f59e0b')
+      });
+    }
+
+    // Audio Visualizer waveform bars
+    const barCount = 36;
+
+    // Helper Easing Functions
+    function easeOutCubic(x) {
+      return 1 - Math.pow(1 - x, 3);
+    }
+    function easeInOutQuad(x) {
+      return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    }
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function renderFrame(frame) {
+      const time = frame / FPS; // Time in seconds
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+      // 1. Dynamic Cyber Background Gradient
+      const bgGrad = ctx.createRadialGradient(WIDTH / 2, HEIGHT / 2, 100, WIDTH / 2, HEIGHT / 2, 1100);
+      bgGrad.addColorStop(0, '#0f172a');
+      bgGrad.addColorStop(0.5, '#070b14');
+      bgGrad.addColorStop(1, '#020408');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+      // 2. Animated Perspective Grid Lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.lineWidth = 1.5;
+      const gridOffset = (frame * 1.5) % 80;
+      for (let x = 0; x < WIDTH; x += 80) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, HEIGHT);
+        ctx.stroke();
+      }
+      for (let y = gridOffset; y < HEIGHT; y += 80) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(WIDTH, y);
+        ctx.stroke();
+      }
+
+      // 3. Floating Neon Particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = WIDTH;
+        if (p.x > WIDTH) p.x = 0;
+        if (p.y < 0) p.y = HEIGHT;
+        if (p.y > HEIGHT) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha * (0.6 + 0.4 * Math.sin(time * 3 + p.radius));
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1.0;
+
+      // 4. Central 3D Geometric Hologram Rings
+      ctx.save();
+      ctx.translate(WIDTH / 2, 620);
+      const pulseScale = 1 + 0.06 * Math.sin(time * 5);
+
+      // Outer Pulsing Orbit Ring
+      ctx.rotate(time * 0.8);
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(0, 0, 220 * pulseScale, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Middle Terracotta Ring
+      ctx.rotate(-time * 1.5);
+      ctx.strokeStyle = 'rgba(223, 94, 18, 0.6)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([20, 15, 6, 15]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 160 * pulseScale, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Inner Core Hexagon
+      ctx.rotate(time * 2);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 5;
+      ctx.shadowColor = '#df5e12';
+      ctx.shadowBlur = 25;
+      ctx.beginPath();
+      for (let s = 0; s < 6; s++) {
+        const angle = (s * Math.PI) / 3;
+        const hx = Math.cos(angle) * 90 * pulseScale;
+        const hy = Math.sin(angle) * 90 * pulseScale;
+        if (s === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Center glowing emblem
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 24 * pulseScale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 5. Reactive Waveform Spectrum
+      ctx.save();
+      const waveY = 960;
+      const barWidth = 14;
+      const spacing = 10;
+      const totalWaveWidth = barCount * (barWidth + spacing);
+      const startX = (WIDTH - totalWaveWidth) / 2;
+
+      for (let b = 0; b < barCount; b++) {
+        const barX = startX + b * (barWidth + spacing);
+        const distFromCenter = Math.abs(b - barCount / 2) / (barCount / 2);
+        const heightMultiplier = 1 - distFromCenter * 0.6;
+        const h = (Math.sin(time * 8 + b * 0.4) * 0.5 + 0.5) * 110 * heightMultiplier + 12;
+
+        const grad = ctx.createLinearGradient(0, waveY - h, 0, waveY + h);
+        grad.addColorStop(0, '#06b6d4');
+        grad.addColorStop(0.5, '#df5e12');
+        grad.addColorStop(1, '#f59e0b');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(barX, waveY - h / 2, barWidth, h);
+      }
+      ctx.restore();
+
+      // 6. SCENE-BASED KINETIC TYPOGRAPHY & OVERLAYS
+      ctx.textAlign = 'center';
+
+      // SCENE 1: 0.0s - 4.0s (The Hook & Ignition)
+      if (time < 4.0) {
+        const p1 = Math.min(1, time / 1.0);
+        const scale1 = easeOutBack(p1);
+
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1160);
+        ctx.scale(scale1, scale1);
+
+        // Subtitle badge
+        ctx.fillStyle = 'rgba(223, 94, 18, 0.15)';
+        ctx.strokeStyle = '#df5e12';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(-220, -50, 440, 44, 22);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = '700 20px monospace';
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillText('⚡ ONE OPENAI-COMPATIBLE API', 0, -22);
+
+        // Main Title
+        ctx.font = '900 78px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(223, 94, 18, 0.8)';
+        ctx.shadowBlur = 30;
+        ctx.fillText('CODECRAFT', 0, 70);
+
+        ctx.font = '700 36px -apple-system, sans-serif';
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowBlur = 15;
+        ctx.fillText('Every Frontier AI Model', 0, 130);
+        ctx.restore();
+      }
+
+      // SCENE 2: 4.0s - 8.5s (Model Showcase & High-Speed Switch)
+      else if (time >= 4.0 && time < 8.5) {
+        const sceneTime = time - 4.0;
+        const cardProgress = Math.min(1, sceneTime / 0.8);
+        const slideY = (1 - easeOutCubic(cardProgress)) * 120;
+
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1100 + slideY);
+
+        // Models Banner Card
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(-420, 0, 840, 360, 24);
+        ctx.fill();
+        ctx.stroke();
+
+        // Model 1: Claude Opus 5
+        const activeIdx = Math.floor(sceneTime * 1.5) % 3;
+        const models = [
+          { name: 'CLAUDE OPUS 5', spec: '1M Context • High-Order Reasoning', color: '#df5e12', tag: 'Anthropic' },
+          { name: 'GEMINI 3.7 FLASH', spec: 'Sub-100ms Multimodal Streaming', color: '#06b6d4', tag: 'Google' },
+          { name: 'DEEPSEEK V4 PRO', spec: 'Frontier Math & SOTA Systems', color: '#10b981', tag: 'DeepSeek' }
+        ];
+
+        models.forEach((m, i) => {
+          const rowY = 75 + i * 95;
+          const isHighlight = i === activeIdx;
+
+          if (isHighlight) {
+            ctx.fillStyle = 'rgba(223, 94, 18, 0.12)';
+            ctx.beginPath();
+            ctx.roundRect(-390, rowY - 45, 780, 80, 16);
+            ctx.fill();
+          }
+
+          ctx.font = '800 34px -apple-system, sans-serif';
+          ctx.fillStyle = isHighlight ? m.color : '#94a3b8';
+          ctx.textAlign = 'left';
+          ctx.fillText((isHighlight ? '▶ ' : '  ') + m.name, -370, rowY);
+
+          ctx.font = '600 20px monospace';
+          ctx.fillStyle = '#cbd5e1';
+          ctx.fillText(m.spec, -370, rowY + 30);
+
+          // Tag
+          ctx.textAlign = 'right';
+          ctx.font = '700 18px monospace';
+          ctx.fillStyle = isHighlight ? m.color : '#64748b';
+          ctx.fillText(m.tag, 370, rowY + 12);
+        });
+
+        ctx.restore();
+      }
+
+      // SCENE 3: 8.5s - 12.0s (Telemetry & Infrastructure Speed)
+      else if (time >= 8.5 && time < 12.0) {
+        const sceneTime = time - 8.5;
+        const progress = Math.min(1, sceneTime / 0.8);
+        const scale3 = easeOutBack(progress);
+
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1140);
+        ctx.scale(scale3, scale3);
+
+        ctx.font = '900 52px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 25;
+        ctx.fillText('UNMATCHED SPEED', 0, 0);
+
+        // 3 Telemetry Pillars
+        const stats = [
+          { val: '120ms', label: 'LATENCY' },
+          { val: '100M', label: 'FREE TOKENS' },
+          { val: '99.98%', label: 'UPTIME' }
+        ];
+
+        stats.forEach((st, idx) => {
+          const sx = -280 + idx * 280;
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+          ctx.strokeStyle = '#06b6d4';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.roundRect(sx - 120, 45, 240, 140, 18);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.font = '900 46px monospace';
+          ctx.fillStyle = '#38bdf8';
+          ctx.shadowBlur = 10;
+          ctx.fillText(st.val, sx, 115);
+
+          ctx.font = '700 16px -apple-system, sans-serif';
+          ctx.fillStyle = '#94a3b8';
+          ctx.shadowBlur = 0;
+          ctx.fillText(st.label, sx, 155);
+        });
+
+        // Code Endpoint pill
+        ctx.font = '700 22px monospace';
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillText('endpoint: https://codecraftapi.com/v1', 0, 240);
+
+        ctx.restore();
+      }
+
+      // SCENE 4: 12.0s - 15.0s (Call To Action & Outro Climax)
+      else {
+        const sceneTime = time - 12.0;
+        const progress = Math.min(1, sceneTime / 0.6);
+        const scale4 = easeOutBack(progress);
+
+        ctx.save();
+        ctx.translate(WIDTH / 2, 1120);
+        ctx.scale(scale4, scale4);
+
+        ctx.font = '900 70px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#df5e12';
+        ctx.shadowBlur = 35;
+        ctx.fillText('BUILD IN SECONDS.', 0, 0);
+
+        ctx.font = '700 32px -apple-system, sans-serif';
+        ctx.fillStyle = '#f59e0b';
+        ctx.shadowBlur = 15;
+        ctx.fillText('Plug Into Cursor, Cline & Python', 0, 60);
+
+        // CTA Button Graphic
+        ctx.fillStyle = 'linear-gradient(90deg, #df5e12, #c2410c)';
+        ctx.fillStyle = '#df5e12';
+        ctx.beginPath();
+        ctx.roundRect(-280, 110, 560, 80, 24);
+        ctx.fill();
+
+        ctx.font = '900 32px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 0;
+        ctx.fillText('START FREE TODAY ➤', 0, 162);
+
+        ctx.font = '600 22px monospace';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('codecraftapi.com • Zero Setup Fee', 0, 235);
+
+        ctx.restore();
+      }
+
+      // 7. Top HUD Metadata Banner (Persistent Across Video)
+      ctx.save();
+      ctx.font = '700 18px monospace';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.textAlign = 'left';
+      ctx.fillText('🔴 REC [60 FPS • 4K ULTRA]', 60, 80);
+
+      ctx.textAlign = 'right';
+      const timeRemaining = (DURATION - time).toFixed(1);
+      ctx.fillText(`CODECRAFT OS // T-${timeRemaining}s`, WIDTH - 60, 80);
+
+      // Top progress bar
+      ctx.fillStyle = '#df5e12';
+      ctx.fillRect(0, 0, (frame / TOTAL_FRAMES) * WIDTH, 8);
+      ctx.restore();
+    }
+
+    // Animation Loop
+    function loop() {
+      renderFrame(currentFrame);
+      currentFrame = (currentFrame + 1) % TOTAL_FRAMES;
+      animationId = requestAnimationFrame(loop);
+    }
+    loop();
+
+    // Replay
+    btnReplay.addEventListener('click', () => {
+      currentFrame = 0;
+    });
+
+    // Recording Engine via MediaRecorder
+    window.startRecording = function() {
+      return new Promise((resolve) => {
+        recordedChunks = [];
+        currentFrame = 0;
+        const stream = canvas.captureStream(FPS);
+
+        const options = {
+          mimeType: 'video/webm;codecs=vp9',
+          videoBitsPerSecond: 8000000 // 8 Mbps high quality
+        };
+
+        mediaRecorder = new MediaRecorder(stream, options);
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          statusText.textContent = `Completed! Size: ${(blob.size / 1024 / 1024).toFixed(2)} MB`;
+          resolve(blob);
+        };
+
+        statusText.textContent = 'Recording 15s Motion Graphic Video at 60 FPS...';
+        mediaRecorder.start();
+
+        // Stop precisely after 15 seconds
+        setTimeout(() => {
+          mediaRecorder.stop();
+        }, DURATION * 1000 + 300);
+      });
+    };
+
+    btnRecord.addEventListener('click', async () => {
+      btnRecord.disabled = true;
+      const blob = await window.startRecording();
+      btnRecord.disabled = false;
+
+      // Trigger download
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'codecraft_motion_graphic_1080x1920.webm';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  </script>
+</body>
+</html>
