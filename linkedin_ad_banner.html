@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LinkedIn Ad Banner - AI Toolkit Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      width: 1200px;
+      height: 627px;
+      background: radial-gradient(circle at 85% 20%, rgba(6, 182, 212, 0.18), transparent 45%),
+                  radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.15), transparent 45%),
+                  #070B14;
+      color: #FFFFFF;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+      position: relative;
+    }
+    /* Subtle Grid Overlay */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+      pointer-events: none;
+    }
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #10B981, #06B6D4);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+    .brand-text h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #FFFFFF, #E2E8F0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text p {
+      font-size: 13px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #34D399;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10B981;
+    }
+
+    /* Main Center Content */
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+    }
+    .tagline-pill {
+      display: inline-block;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #38BDF8;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .headline {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 14px;
+    }
+    .headline span.gradient {
+      background: linear-gradient(135deg, #34D399 0%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtext {
+      font-size: 18px;
+      line-height: 1.45;
+      color: #94A3B8;
+      font-weight: 400;
+      max-width: 780px;
+    }
+
+    /* Feature Grid / Cards */
+    .features-row {
+      display: flex;
+      gap: 16px;
+      z-index: 2;
+      margin-top: 10px;
+    }
+    .feature-card {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      backdrop-filter: blur(12px);
+    }
+    .feature-icon {
+      font-size: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .feature-info h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .feature-info p {
+      font-size: 12px;
+      color: #64748B;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Bottom Bar */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      z-index: 2;
+    }
+    .pricing-tag {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .pricing-tag .price {
+      font-size: 28px;
+      font-weight: 900;
+      color: #34D399;
+      letter-spacing: -0.5px;
+    }
+    .pricing-tag .sub {
+      font-size: 14px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+    .cta-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10B981, #0284C7);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-pattern"></div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand">
+      <div class="logo-icon">⚡</div>
+      <div class="brand-text">
+        <h2>AI Toolkit Pro</h2>
+        <p>Shabbir Ahmed AI Solutions • GS Road, Guwahati</p>
+      </div>
+    </div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      24/7 Autonomous Cloud Daemon
+    </div>
+  </div>
+
+  <!-- Main Hero Content -->
+  <div class="hero-content">
+    <div class="tagline-pill">Guwahati & Pan-India Business Automation</div>
+    <h1 class="headline">
+      Never Miss a Patient or Customer to a <span class="gradient">Missed Call Again.</span>
+    </h1>
+    <p class="subtext">
+      Turn WhatsApp into your highest-converting front desk. Autonomous 24/7 appointment bookings, instant patient queue management, and digital prescription delivery.
+    </p>
+  </div>
+
+  <!-- 3 Feature Cards -->
+  <div class="features-row">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-info">
+        <h4>Sub-2s AI Response</h4>
+        <p>Anti-Ban human typing delay</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏥</div>
+      <div class="feature-info">
+        <h4>Clinic OPD & Prescription</h4>
+        <p>Paperless queue + WhatsApp Rx</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💳</div>
+      <div class="feature-info">
+        <h4>Dynamic UPI Advance</h4>
+        <p>Eliminate client no-shows</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom CTA Bar -->
+  <div class="bottom-bar">
+    <div class="pricing-tag">
+      <span class="price">₹2,500/mo flat</span>
+      <span class="sub">• Zero Setup Fee • 7-Day Risk-Free Trial</span>
+    </div>
+    <div class="cta-button">
+      Test Live Demo on WhatsApp →
+    </div>
+  </div>
+</body>
+</html>
