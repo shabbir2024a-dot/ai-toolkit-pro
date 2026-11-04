@@ -558,7 +558,7 @@ if __name__ == "__main__":
 3. **Week 3:** System integration testing, acoustic/latency tuning, and client handover.
 
 #### 4. Next Step
-To implement this turnkey specification directly on your site or in your software stack, reach out directly to Shabbir Ahmed via WhatsApp (+91 69000 77102).`;
+To implement this turnkey specification directly on your site or in your software stack, reach out directly to Shabbir Ahmed via WhatsApp (+91 86386 28661).`;
   }
 
   // Copy Output
@@ -597,7 +597,7 @@ To implement this turnkey specification directly on your site or in your softwar
       const model = modelSelect ? modelSelect.value : 'claude-opus-5';
       const prompt = promptInput.value.slice(0, 100);
       const waText = `Hi Shabbir, I just generated a system specification using your Anthropic ${model} Studio for: "${prompt}..." Let's discuss implementing this project!`;
-      window.open(`https://wa.me/916900077102?text=${encodeURIComponent(waText)}`, '_blank');
+      window.open(`https://wa.me/918638628661?text=${encodeURIComponent(waText)}`, '_blank');
     });
   }
 }
@@ -615,13 +615,13 @@ window.payWithRazorpay = function(gigTitle, amountInInr) {
     image: "assets/images/shabbir_hero.jpg",
     handler: function (response) {
       alert("✓ Payment Successful! Payment ID: " + response.razorpay_payment_id + "\nThank you for booking! Shabbir will contact you on WhatsApp/Email within 4 hours.");
-      const waUrl = "https://wa.me/916900077102?text=" + encodeURIComponent("Hi Shabbir, I just completed payment of ₹" + amountInInr + " for " + gigTitle + " (Payment ID: " + response.razorpay_payment_id + ")");
+      const waUrl = "https://wa.me/918638628661?text=" + encodeURIComponent("Hi Shabbir, I just completed payment of ₹" + amountInInr + " for " + gigTitle + " (Payment ID: " + response.razorpay_payment_id + ")");
       window.open(waUrl, '_blank');
     },
     prefill: {
       name: "Client",
       email: "shabbir2024a@gmail.com",
-      contact: "+916900077102"
+      contact: "+918638628661"
     },
     notes: {
       service: gigTitle,
@@ -644,7 +644,7 @@ window.payWithRazorpay = function(gigTitle, amountInInr) {
     }
   } catch (err) {
     console.warn("Falling back to WhatsApp direct payment booking:", err);
-    const waDirect = "https://wa.me/916900077102?text=" + encodeURIComponent("Hi Shabbir, I want to book: " + gigTitle + " (₹" + amountInInr + "). Please share your direct Razorpay payment link or UPI ID.");
+    const waDirect = "https://wa.me/918638628661?text=" + encodeURIComponent("Hi Shabbir, I want to book: " + gigTitle + " (₹" + amountInInr + "). Please share your direct Razorpay payment link or UPI ID.");
     window.open(waDirect, '_blank');
   }
 };
@@ -673,9 +673,9 @@ Would you like to download the source code or have us deploy turnkey?`;
       }
       simAddMsg(`Opening Razorpay secure checkout for Starter WhatsApp AI Bot turnkey setup (₹2,499)... You can also pay via UPI.`, 'bot', ['Speak with Shabbir']);
     } else if (optionText.includes('Shabbir') || optionText.includes('human') || optionText.includes('Human') || optionText.includes('Real WhatsApp')) {
-      const waUrl = "https://wa.me/916900077102?text=" + encodeURIComponent("Hi Shabbir, I tested your website AI Assistant simulator and want to discuss setting up an AI bot for my business.");
+      const waUrl = "https://wa.me/918638628661?text=" + encodeURIComponent("Hi Shabbir, I tested your website AI Assistant simulator and want to discuss setting up an AI bot for my business.");
       window.open(waUrl, '_blank');
-      simAddMsg(`Connecting you with Shabbir Ahmed on WhatsApp (+91 69000 77102)...`, 'bot');
+      simAddMsg(`Connecting you with Shabbir Ahmed on WhatsApp (+91 86386 28661)...`, 'bot');
     } else if (optionText.includes('Book') || optionText.includes('Slot') || optionText.includes('appointment')) {
       const reply = `Priority Consultation Slots available:
 • Today: 5:30 PM & 7:00 PM
