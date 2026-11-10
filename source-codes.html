@@ -621,31 +621,29 @@
     </div>
   </header>
 
-  <!-- Direct UPI Scan & Telegram Bot Banner -->
+  <!-- Direct Checkout & VIP Access Banner -->
   <div id="upi-checkout" style="background: linear-gradient(90deg, #021a19, #052e30, #021a19); border-bottom: 1px solid rgba(12, 150, 156, 0.4); padding: 14px 0; color: #ffffff;">
     <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 14px;">
-        <img src="assets/images/shabbir_upi_qr.jpg" alt="UPI QR" style="width: 54px; height: 54px; border-radius: 8px; border: 2px solid #0C969C; background: #fff; cursor: pointer; object-fit: contain; padding: 2px;" onclick="toggleQrModal()" title="Click to view QR Code">
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(12, 150, 156, 0.2); border: 1px solid #0C969C; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+          ⚡
+        </div>
         <div>
           <div style="font-size: 0.82rem; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
-            <span>⚡ 0% GATEWAY FEE • INSTANT UPI SCAN & PAY</span>
+            <span>⚡ INSTANT 1-CLICK CHECKOUT • SECURE RAZORPAY & CARDS</span>
             <span style="background: rgba(12,150,156,0.25); color: #0C969C; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px;">Direct Delivery</span>
           </div>
           <div style="font-size: 0.88rem; color: #cbd5e1; margin-top: 2px;">
-            UPI ID: <strong style="color: #38bdf8; font-family: 'IBM Plex Mono', monospace; cursor: pointer;" onclick="copyCoupon('shabbir2015a-2@okhdfcbank')">shabbir2015a-2@okhdfcbank</strong> 📋
-            <span style="color: #64748b; margin: 0 4px;">|</span> SBI A/C: <span style="font-family: 'IBM Plex Mono', monospace; color: #94a3b8;">20194041423 (IFSC: SBIN0014257)</span>
+            100% Unencrypted Source Code • Instant ZIP Download on Checkout • Commercial License Included
           </div>
         </div>
       </div>
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-        <button onclick="toggleQrModal()" style="background: rgba(12, 150, 156, 0.25); color: #0C969C; border: 1px solid #0C969C; padding: 7px 14px; border-radius: 99px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-          📷 View QR Code
-        </button>
         <a href="https://t.me/ShabbirAhmedStoreBot" target="_blank" rel="noopener" style="background: #0284c7; color: #fff; padding: 7px 14px; border-radius: 99px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
           🤖 Telegram Store Bot ↗
         </a>
-        <a href="https://wa.me/918638628661?text=Hi%20Shabbir,%20I'm%20buying%20source%20code%20via%20UPI.%20Here%20is%20my%20screenshot:" target="_blank" rel="noopener" style="background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); padding: 6px 12px; border-radius: 99px; font-weight: 600; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-          💬 WhatsApp Receipt
+        <a href="https://wa.me/918638628661?text=Hi%20Shabbir,%20I'm%20interested%20in%20purchasing%20source%20codes.%20Can%20you%20help%20me?" target="_blank" rel="noopener" style="background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); padding: 6px 12px; border-radius: 99px; font-weight: 600; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+          💬 WhatsApp Support
         </a>
       </div>
     </div>
@@ -843,33 +841,8 @@
       });
     }
 
-    function toggleQrModal() {
-      const modal = document.getElementById('qrModal');
-      if (modal) {
-        modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-      }
-    }
-
     // Render immediately
     renderCatalog(catalog);
   </script>
-
-  <!-- QR Code Modal Lightbox -->
-  <div id="qrModal" onclick="toggleQrModal()" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
-    <div onclick="event.stopPropagation()" style="background: #042426; border: 1px solid #0C969C; border-radius: 20px; padding: 24px; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative;">
-      <button onclick="toggleQrModal()" style="position: absolute; top: 12px; right: 12px; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">✕</button>
-      <div style="font-size: 0.8rem; font-weight: 700; color: #34d399; margin-bottom: 8px;">⚡ 0% FEES • INSTANT SCAN TO PAY</div>
-      <div style="background: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
-        <img src="assets/images/shabbir_upi_qr.jpg" alt="Shabbir Ahmed UPI QR" style="width: 220px; height: auto; display: block; border-radius: 6px;">
-      </div>
-      <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Shabbir Ahmed</div>
-      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: #38bdf8; margin-bottom: 12px;">shabbir2015a-2@okhdfcbank</div>
-      <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 16px;">State Bank of India (SBI)<br>A/C: 20194041423 • IFSC: SBIN0014257</div>
-      <div style="display: flex; gap: 8px; justify-content: center;">
-        <button onclick="copyCoupon('shabbir2015a-2@okhdfcbank')" style="background: #0C969C; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">📋 Copy UPI ID</button>
-        <a href="https://wa.me/918638628661?text=Hi%20Shabbir,%20I've%20sent%20payment%20via%20UPI.%20Here%20is%20my%20screenshot:" target="_blank" rel="noopener" style="background: #10B981; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.8rem;">💬 Send Receipt</a>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
